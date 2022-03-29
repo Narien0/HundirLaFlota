@@ -17,7 +17,7 @@ public class Agua extends Tile {
 	public void setOcupado(boolean b) {
 		this.ocupado=b;
 //		System.out.println(""+this.coordX+this.coordY);
-		Vista.getVista().TESTOCUPADO(coordX, coordY);
+//		Vista.getVista().TESTOCUPADO(coordX, coordY);
 	}
 
 }

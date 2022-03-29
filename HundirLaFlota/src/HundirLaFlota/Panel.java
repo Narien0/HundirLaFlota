@@ -36,31 +36,43 @@ public class Panel {
 		// TODO - implement Panel.sePuedePoner
 		boolean z = false;
 		if (pCodDIr == 0){
-			if (y - pTam >= 0){
-				z = Arrays.stream(lTiles) // Stream<Tile[]>
-						.flatMap(Arrays::stream)
-						.filter(t -> t.coordY <= y - pTam + 1).allMatch(t -> t instanceof Agua && ((Agua) t).getOcupado() == false);
+			if (y - pTam +1 >= 0){
+				z=
+						Arrays.stream(lTiles) // Stream<Tile[]>
+								.flatMap(Arrays::stream)
+								.filter(t -> t.coordY >= y - pTam + 1 && t.coordY <= y && t.coordX == x)
+								//.forEach(e -> System.out.println("set0:" + e.coordX + " " + e.coordY + "<= La Y:"+ y + " - " + pTam));
+								.allMatch(t -> t instanceof Agua && ((Agua) t).getOcupado() == false);
 			}
 		}
 		else if (pCodDIr == 1){
-			if (x + pTam <= 9){
-				z = Arrays.stream(lTiles) // Stream<Tile[]>
-						.flatMap(Arrays::stream)
-						.filter(t -> t.coordY <= x + pTam - 1).allMatch(t -> t instanceof Agua && ((Agua) t).getOcupado() == false);
+			if (x + pTam <= 10){
+				z =
+						Arrays.stream(lTiles) // Stream<Tile[]>
+								.flatMap(Arrays::stream)
+								.filter(t -> t.coordX <= x + pTam - 1 && t.coordX >= x && t.coordY == y)
+								//.forEach(e -> System.out.println("set1:" +e.coordX + " " + e.coordY + "<= la X:"+ x + " + " + pTam));
+								.allMatch(t -> t instanceof Agua && ((Agua) t).getOcupado() == false);
 			}
 		}
 		else if(pCodDIr == 2){
-			if (y + pTam <= 9){
-				z = Arrays.stream(lTiles) // Stream<Tile[]>
-						.flatMap(Arrays::stream)
-						.filter(t -> t.coordY <= y + pTam - 1).allMatch(t -> t instanceof Agua && ((Agua) t).getOcupado() == false);
+			if (y + pTam <= 10){
+				z =
+						Arrays.stream(lTiles) // Stream<Tile[]>
+								.flatMap(Arrays::stream)
+								.filter(t -> t.coordY <= y + pTam - 1 && t.coordY >= y  && t.coordX == x)
+								//.forEach(e -> System.out.println("set2:" +e.coordX + " " + e.coordY + "<= la Y:"+ y + " + " + pTam));
+								.allMatch(t -> t instanceof Agua && ((Agua) t).getOcupado() == false);
 			}
 		}
 		else if(pCodDIr == 3){
-			if (x - pTam >= 0){
-				z = Arrays.stream(lTiles) // Stream<Tile[]>
-						.flatMap(Arrays::stream)
-						.filter(t -> t.coordY <= x - pTam + 1).allMatch(t -> t instanceof Agua && ((Agua) t).getOcupado() == false);
+			if (x - pTam +1 >= 0){
+				z =
+						Arrays.stream(lTiles) // Stream<Tile[]>
+								.flatMap(Arrays::stream)
+								.filter(t -> t.coordX >= x - pTam + 1 && t.coordX <= x && t.coordY == y)
+								//.forEach(e -> System.out.println("set3:" +e.coordX + " " + e.coordY + "<= La X:"+ x + " - " + pTam));
+								.allMatch(t -> t instanceof Agua && ((Agua) t).getOcupado() == false);
 			}
 		}
 		return z;
@@ -149,6 +161,5 @@ public class Panel {
 			}
 			indx++;
 		}
-		System.out.println("%%"+xfin+ " "+ yfin);
 	}
 }

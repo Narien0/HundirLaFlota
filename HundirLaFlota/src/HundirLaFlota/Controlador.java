@@ -32,13 +32,13 @@ public class Controlador implements ActionListener, MouseListener {
 		}else if(((JButton) e.getSource()).getText().equals("Misil")) {
 			Modelo.getModelo().cargarAccion(1);
 		}else if(((JButton) e.getSource()).getText().equals("Portaviones")) {
-			Modelo.getModelo().recibirTamaño(4);
+			Modelo.getModelo().recibirTamano(4);
 		}else if(((JButton) e.getSource()).getText().equals("Submarino")) {
-			Modelo.getModelo().recibirTamaño(3);
+			Modelo.getModelo().recibirTamano(3);
 		}else if(((JButton) e.getSource()).getText().equals("Destructor")) {
-			Modelo.getModelo().recibirTamaño(2);
+			Modelo.getModelo().recibirTamano(2);
 		}else if(((JButton) e.getSource()).getText().equals("Fragata")) {
-			Modelo.getModelo().recibirTamaño(1);
+			Modelo.getModelo().recibirTamano(1);
 		}else if(((JButton) e.getSource()).getText().equals("Arriba")) {
 			Modelo.getModelo().recibirDir(0);
 		}else if(((JButton) e.getSource()).getText().equals("Abajo")) {

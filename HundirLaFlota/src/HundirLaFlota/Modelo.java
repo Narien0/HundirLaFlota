@@ -11,7 +11,7 @@ public class Modelo extends Observable {
 	private IA ia;
 	private int bapCoordX;
 	private int bapCoordY;
-	private int bapTamaño;
+	private int bapTamano;
 	private int estado;				//Estado 0: colocoar barcos, estado 1: bombardear
 
 	private Modelo() {
@@ -92,9 +92,9 @@ public class Modelo extends Observable {
 		// 1 = Este
 		// 2 = Sur
 		// 3 = Oeste
-		if(this.bapCoordX !=-1 && this.bapCoordY!=-1 && this.bapTamaño!=0) {
+		if(this.bapCoordX !=-1 && this.bapCoordY!=-1 && this.bapTamano!=0) {
 			if (estado == 0){
-				u.ponerBarco(this.bapCoordX,this.bapCoordY,this.bapTamaño, pCodDir);
+				u.ponerBarco(this.bapCoordX,this.bapCoordY,this.bapTamano, pCodDir);
 			}
 			setChanged();
 			notifyObservers("");
@@ -102,15 +102,15 @@ public class Modelo extends Observable {
 		}
 	}
 
-	public void recibirTamaño(int pTam) {
+	public void recibirTamano(int pTam) {
 		//Almacenamos el Tamaño, el tipo, de barco para posterior uso en la colocacion
 		if(estado == 0){
-			this.bapTamaño = pTam;
+			this.bapTamano = pTam;
 			
 			String cod;
-			if(this.bapTamaño==1)cod="Fragata";
-			else if(this.bapTamaño==2)cod="Destructor";
-			else if(this.bapTamaño==3)cod="Submarino";
+			if(this.bapTamano==1)cod="Fragata";
+			else if(this.bapTamano==2)cod="Destructor";
+			else if(this.bapTamano==3)cod="Submarino";
 			else /*if(this.bapTamaño==2)*/cod="Portviones";
 			setChanged();
 			notifyObservers(cod);
@@ -122,8 +122,10 @@ public class Modelo extends Observable {
 		this.turnoUsuario = !this.turnoUsuario;
 		setChanged();
 		notifyObservers(this.turnoUsuario);
-//		if(estado == 0) this.ia.ponerBarcosInteligente(); //Faltan implementar en IA
+		if(!this.turnoUsuario) {
+		if(estado == 0) this.ia.ponerBarcosInteligente(); //Faltan implementar en IA
 //		else this.ia.realizarAccionInteligente();
+		}
 	}
 	
 	public void cambioEstado() {
@@ -136,7 +138,7 @@ public class Modelo extends Observable {
 		//Valores almacenados cuando no se ha seleccionado nada
 		this.bapCoordX=-1;
 		this.bapCoordY=-1;
-		this.bapTamaño=0;
+		this.bapTamano=0;
 	}
 	
 	private void pierde(Jugador j) {
