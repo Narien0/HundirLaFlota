@@ -54,15 +54,20 @@ public class Vista extends JFrame implements Observer {
 	
 	private JPanel menuAcciones;
 	private JPanel menuPonerBarcos;
+	private JPanel panelFin;
+	private JPanel panelInfo;
 	
 	private JLabel lblBarcosusr;
 	private JLabel lblBarcosia;
 	
-	private JLabel lblBarcoSeleccionado;
+	private JLabel lblSeleccion;
+	
+	private JLabel lblGana;
 	
 	//######################Colores
 	private Color cBarco;
 	private Color cAgua;
+	private Color cAguaTocada;
 	private Color cSeleccion;
 	private Color cOculto;
 	private Color cTocado;
@@ -75,6 +80,7 @@ public class Vista extends JFrame implements Observer {
 		
 		this.cBarco = Color.black;
 		this.cAgua = Color.blue;
+		this.cAguaTocada = new Color(0,0,139);
 		this.cSeleccion = Color.gray;
 		this.cOculto = Color.darkGray;
 		this.cTocado = Color.red;
@@ -189,18 +195,26 @@ public class Vista extends JFrame implements Observer {
 		
 		
 		////###############################################################
-		JPanel panel = new JPanel();
-		pnlBajo.add(panel);
-		panel.setLayout(new GridLayout(3, 1, 0, 0));
+		panelInfo = new JPanel();
+		pnlBajo.add(panelInfo);
+		panelInfo.setLayout(new GridLayout(3, 1, 0, 0));
 		
 		lblBarcosusr = new JLabel("BarcosUsr:");
-		panel.add(lblBarcosusr);
+		panelInfo.add(lblBarcosusr);
 				
 		lblBarcosia = new JLabel("BarcosIA:");
-		panel.add(lblBarcosia);
+		panelInfo.add(lblBarcosia);
 		
-		lblBarcoSeleccionado = new JLabel("Barco Seleccionado: ");
-		panel.add(lblBarcoSeleccionado);
+		lblSeleccion = new JLabel("Barco Seleccionado: ");
+		panelInfo.add(lblSeleccion);
+		
+		
+		this.panelFin = new JPanel();
+		pnlBajo.add(panelFin);
+		panelFin.setVisible(false);
+		
+		this.lblGana = new JLabel("Gana el");
+		panelFin.add(lblGana);
 		
 		
 	}
@@ -218,7 +232,13 @@ public class Vista extends JFrame implements Observer {
 		if (o instanceof Tile) {
 			JLabel aux = this.buscarPanel(((Tile) o).getCoordX(),((Tile) o).getCoordY());
 			if((Integer)arg==0) {
-				if(o instanceof Agua)	this.cambiarColorCasilla(aux, this.cAgua);
+				if(o instanceof Agua) {
+					if(aux.getBackground().equals(cAgua) && estado ==1) {
+						this.cambiarColorCasilla(aux, cAguaTocada);
+					}else {
+						this.cambiarColorCasilla(aux, this.cAgua);	
+					}
+				}
 				else if(o instanceof TBarco)	this.cambiarColorCasilla(aux, this.cBarco);
 			}else if ((Integer)arg==1) {
 				this.cambiarColorCasilla(aux, this.cTocado);
@@ -252,13 +272,27 @@ public class Vista extends JFrame implements Observer {
 		}else if (o instanceof Modelo) {
 			//Cambio de estado
 			if(arg instanceof Integer) {
-				this.menuPonerBarcos.setVisible(false);
-				this.lblBarcoSeleccionado.setVisible(false);
-				this.menuAcciones.setVisible(true);
-				this.estado=(int) arg;
+				if((int)arg==1) {
+					this.menuPonerBarcos.setVisible(false);
+					this.menuAcciones.setVisible(true);
+					this.lblSeleccion.setText("Accion Seleccionada: ");
+					this.estado=(int) arg;
+				}else if((int)arg==2) {
+					this.menuAcciones.setVisible(false);
+					this.panelInfo.setVisible(false);
+					this.panelFin.setVisible(true);
+					this.estado=(int) arg;
+				}
 			}else if(arg instanceof String) {
-				String selec = "Barco Seleccionado: "  + arg;
-				lblBarcoSeleccionado.setText(selec);
+				if(estado == 0 /*&& (((String)arg).equals("Fragata")||((String)arg).equals("Destructor")||((String)arg).equals("Submarino")||((String)arg).equals("Portaviones"))*/) {	
+					String selec = "Barco Seleccionado: "  + arg;
+					lblSeleccion.setText(selec);
+				}else if(estado == 1 /*&&(((String)arg).equals("Bomba")||((String)arg).equals("Misil"))*/) {
+					String selec = "Accion Seleccionada: "+ arg;
+					lblSeleccion.setText(selec);
+				}else {
+					this.lblGana.setText((String)arg);
+				}
 			}else /*if(arg instanceof Boolean)*/{
 				this.turnoUsr = (boolean) arg;
 			}

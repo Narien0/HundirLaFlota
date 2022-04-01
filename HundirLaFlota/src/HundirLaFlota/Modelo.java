@@ -38,11 +38,17 @@ public class Modelo extends Observable {
 
 	public void cargarAccion(int pCodAcc) {
 		// TODO - implement Modelo.cargarAccion
+		String notificacion="";
 		if (pCodAcc==0) {
 			this.accionCargada = new Bomba();
-			System.out.println("Accion0");
+			notificacion = "Bomba";
 		}else if(pCodAcc==1) {
 			this.accionCargada = new Misil();
+			notificacion = "Misil";
+		}
+		if(this.turnoUsuario) {
+			setChanged();
+			notifyObservers(notificacion);
 		}
 	}
 
@@ -59,7 +65,12 @@ public class Modelo extends Observable {
 		j1.consumirRecuro(this.accionCargada);
 		j2.actuarSobre(this.accionCargada, x, y);
 		if(estado==1)this.cambioTurno();
-		if(j2.todosHundidos()&&estado==1)this.pierde(j2);;
+		if(j2.todosHundidos()&&estado==1) {
+			this.cambioEstado();
+			this.pierde(j2);
+			this.accionCargada=null;
+		}
+		this.accionCargada = null;
 	}
 
 	public void recibirPos(int x, int y, char tablero) {
@@ -74,14 +85,17 @@ public class Modelo extends Observable {
 				this.actuarSobreTile(x, y);
 				this.accionCargada = null;
 			}else if (estado == 1) {
-				if(this.accionCargada!=null)this.actuarSobreTile(x, y);
+				if(this.accionCargada!=null) {
+					setChanged();
+					notifyObservers("");
+					this.actuarSobreTile(x, y);
+				}
 			}
 		}
 	}
 
 	public void recibirDir(int pCodDir) {
 		Jugador u;
-		Boolean res;
 		if (turnoUsuario) {
 			u = this.usuario;
 		}else {
@@ -94,11 +108,13 @@ public class Modelo extends Observable {
 		// 3 = Oeste
 		if(this.bapCoordX !=-1 && this.bapCoordY!=-1 && this.bapTamano!=0) {
 			if (estado == 0){
-				u.ponerBarco(this.bapCoordX,this.bapCoordY,this.bapTamano, pCodDir);
+				boolean seHaPuesto = u.ponerBarco(this.bapCoordX,this.bapCoordY,this.bapTamano, pCodDir);
+				if(seHaPuesto) {
+					setChanged();
+					notifyObservers("");
+					this.resetBAP();
+				}
 			}
-			setChanged();
-			notifyObservers("");
-			this.resetBAP();
 		}
 	}
 
@@ -111,7 +127,7 @@ public class Modelo extends Observable {
 			if(this.bapTamano==1)cod="Fragata";
 			else if(this.bapTamano==2)cod="Destructor";
 			else if(this.bapTamano==3)cod="Submarino";
-			else /*if(this.bapTamaño==2)*/cod="Portviones";
+			else /*if(this.bapTamaño==4)*/cod="Portviones";
 			setChanged();
 			notifyObservers(cod);
 		}
@@ -123,8 +139,8 @@ public class Modelo extends Observable {
 		setChanged();
 		notifyObservers(this.turnoUsuario);
 		if(!this.turnoUsuario) {
-		if(estado == 0) this.ia.ponerBarcosInteligente(); //Faltan implementar en IA
-//		else this.ia.realizarAccionInteligente();
+		if(estado == 0 && !this.turnoUsuario) this.ia.ponerBarcosInteligente(); //Faltan implementar en IA
+		else if (estado ==1 && this.turnoUsuario==false) this.ia.realizarAccionInteligente();
 		}
 	}
 	
@@ -132,6 +148,7 @@ public class Modelo extends Observable {
 		this.estado++;
 		setChanged();
 		notifyObservers(estado);
+		if(estado==1)this.resetBAP();
 	}
 	
 	private void resetBAP() {
@@ -145,6 +162,8 @@ public class Modelo extends Observable {
 		String msg;
 		if(j.equals(this.usuario))msg="Gana el ordenador. Pierde el jugador";
 		else msg="Gana el jugador. Pierde el ordenador";
+		setChanged();
+		notifyObservers(msg);
 		System.out.println(msg);
 	}
 	

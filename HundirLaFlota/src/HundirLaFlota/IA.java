@@ -4,8 +4,15 @@ import java.util.ArrayList;
 
 public class IA extends Jugador {
 
+	private boolean [][] probados;
+	
 	public IA() {
-		// TODO - implement IA.IA
+		this.probados = new boolean[10][10];
+		for (int i = 0; i < 10;i++) {
+			for (int j=0; j<10;j++) {
+				probados[i][j]=false;
+			}
+		}
 	}
 
 	public void ponerBarcosInteligente() {
@@ -33,10 +40,10 @@ public class IA extends Jugador {
 		}
 //		System.out.println("Boolean a true");
 		int intentos = 0;
-		while(!lista.isEmpty() && intentos <90){
+		while(!lista.isEmpty() && intentos <100){
 			intentos++;
 //			System.out.println("Largo");
-//			System.out.println(intentos);
+			System.out.println(intentos);
 			boolean puesto = false;
 			int cont = 0;
 			int x = (int)(Math.random()*10);
@@ -119,9 +126,34 @@ public class IA extends Jugador {
 	}
 	
 
-	public void realizarAccionInteligente() {
-		// TODO - implement IA.realizarAccionInteligente
-		throw new UnsupportedOperationException();
+	public void realizarAccionInteligente() {		
+		int accion = (int) (Math.random()*2);
+		Modelo.getModelo().cargarAccion(accion);
+		int x = (int) (Math.random()*10);
+		int y = (int) (Math.random()*10);
+		int cont = 0;
+		while (this.probados[x][y]==true && cont<=1000) {
+			x = (int) (Math.random()*10);
+			y = (int) (Math.random()*10);
+			cont++;
+		}
+		
+		if(this.probados[x][y]==true) { //Para que nunca repita posiciones aunque tras las iteraciones de forma aleatoria se encuentre con una que ya ha usado
+			cont = 0;
+			while(this.probados[x][y]==true&&cont<=100) {
+				cont++;
+				x++;
+				if(x>9) {
+					y++;
+					x=0;
+					}
+				if(y>9) {
+					y=0;
+				}
+			}
+		}
+		Modelo.getModelo().recibirPos(x, y, 'I');
+		probados[x][y]=true;
 	}
 	
 	@Override
