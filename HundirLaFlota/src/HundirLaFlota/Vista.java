@@ -237,9 +237,9 @@ public class Vista extends JFrame implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		if (o instanceof Tile) {
+		if (o instanceof Tile) {						//Llamada desde Tile
 			JLabel aux = this.buscarLabel(((Tile) o).getCoordX(),((Tile) o).getCoordY());
-			if((Integer)arg==0) {
+			if((Integer)arg==0) {//Ataque sobre agua
 				if(o instanceof Agua) {
 					if(aux.getBackground().equals(cAgua) && estado ==1) {
 						this.cambiarColorCasilla(aux, cAguaTocada);
@@ -248,9 +248,9 @@ public class Vista extends JFrame implements Observer {
 					}
 				}
 				else if(o instanceof TBarco)	this.cambiarColorCasilla(aux, this.cBarco);
-			}else if ((Integer)arg==1) {
+			}else if ((Integer)arg==1) {//TBarco tocado
 				this.cambiarColorCasilla(aux, this.cTocado);
-			}else if ((Integer)arg==-1) {
+			}else if ((Integer)arg==-1) {//Se selecciona una casilla sobre la que colocar
 				if(this.antSeleccion!=null && this.antSeleccion.getBackground().equals(this.cSeleccion)) {
 					this.cambiarColorCasilla(this.antSeleccion, this.cAgua); 
 				}
@@ -261,8 +261,8 @@ public class Vista extends JFrame implements Observer {
 			}
 			
 			
-		}else if (o instanceof Jugador) {
-			String aux;
+		}else if (o instanceof Jugador) {				//Llamada desde Jugador
+			String aux;									//Añade los barcos puestos hasta ahora
 			if(((Integer)arg)==1) {
 				aux="F";
 			}else if(((Integer)arg)==2) {
@@ -281,31 +281,31 @@ public class Vista extends JFrame implements Observer {
 			union.setText(union.getText() +" "+ aux);
 			
 			
-		}else if (o instanceof Modelo) {
+		}else if (o instanceof Modelo) {				//Llamada desde Modelo
 			//Cambio de estado
-			if(arg instanceof Integer) {
-				if((int)arg==1) {
+			if(arg instanceof Integer) {	//Cambios de estado
+				if((int)arg==1) {		//Cambio a estado 1 (de poner barcos a actuar)
 					this.menuPosicionar.setVisible(false);
 					this.menuAcciones.setVisible(true);
 					this.lblSeleccion.setText("Accion Seleccionada: ");
 					this.estado=(int) arg;
-				}else if((int)arg==2) {
+				}else if((int)arg==2) {	//Cambio a estado 2 (fin de partida)
 					this.menuAcciones.setVisible(false);
 					this.panelInfo.setVisible(false);
 					this.panelFin.setVisible(true);
 					this.estado=(int) arg;
 				}
-			}else if(arg instanceof String) {
-				if(estado == 0 /*&& (((String)arg).equals("Fragata")||((String)arg).equals("Destructor")||((String)arg).equals("Submarino")||((String)arg).equals("Portaviones"))*/) {	
-					String selec = "Barco Seleccionado: "  + arg;
+			}else if(arg instanceof String) {	//Cambios de selección
+				if(estado == 0 ) {	//Cambio de barco seleccionado
+					String selec = "Barco Seleccionado: "  + arg; 
 					lblSeleccion.setText(selec);
-				}else if(estado == 1 /*&&(((String)arg).equals("Bomba")||((String)arg).equals("Misil"))*/) {
+				}else if(estado == 1) { //Cambio de Accion seleccionada
 					String selec = "Accion Seleccionada: "+ arg;
 					lblSeleccion.setText(selec);
-				}else {
+				}else {				//Escribir mensaje de fin de partida
 					this.lblGana.setText((String)arg);
 				}
-			}else /*if(arg instanceof Boolean)*/{
+			}else /*if(arg instanceof Boolean)*/{ //Cambio de turno
 				this.turnoUsr = (boolean) arg;
 			}
 		}
