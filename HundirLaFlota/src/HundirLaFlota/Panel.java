@@ -88,6 +88,7 @@ public class Panel {
 	public void accionarTile(int x, int y, Accion a) {
 		this.lTiles[x][y].ejecutar(a);
 	}
+	
 	public void llenarAgua(){
 //		Arrays.stream(lTiles).flatMap(Arrays::stream).forEach(v -> v = new Agua(v.getCoordX(),v.getCoordY(),true));
 //		Tal cual estaba no funcionaba asi que lo haré con iterador y lo podemos revisar para java8 luego
