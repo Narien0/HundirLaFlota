@@ -53,6 +53,7 @@ public class Vista extends JFrame implements Observer {
 	private JLabel antSeleccion;
 	
 	private JPanel menuAcciones;
+	private JPanel menuPosicionar;
 	private JPanel menuPonerBarcos;
 	private JPanel panelFin;
 	private JPanel panelInfo;
@@ -148,49 +149,56 @@ public class Vista extends JFrame implements Observer {
 		JButton btnMisil = new JButton("Misil");
 		menuAcciones.add(btnMisil);
 		btnMisil.addActionListener(Controlador.getControlador());
-
-		menuPonerBarcos = new JPanel();
-		pnlBajo.add(menuPonerBarcos);
-		menuPonerBarcos.setLayout(new GridLayout(2, 1, 0, 0));
 		
-		JPanel barcos = new JPanel();
-		menuPonerBarcos.add(barcos);
-		barcos.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		menuPosicionar = new JPanel();
+		pnlBajo.add(menuPosicionar);
+				
+				JButton btnLimpiarTablero = new JButton("Limpiar Tablero");
+				menuPosicionar.add(btnLimpiarTablero);
+				btnLimpiarTablero.addActionListener(Controlador.getControlador());
 		
-		JButton btnPortaviones = new JButton("Portaviones");
-		barcos.add(btnPortaviones);
-		btnPortaviones.addActionListener(Controlador.getControlador());
-		
-		JButton btnSubmarino = new JButton("Submarino");
-		barcos.add(btnSubmarino);
-		btnSubmarino.addActionListener(Controlador.getControlador());
-		
-		JButton btnDestructor = new JButton("Destructor");
-		barcos.add(btnDestructor);
-		btnDestructor.addActionListener(Controlador.getControlador());
-		
-		JButton btnFragata = new JButton("Fragata");
-		barcos.add(btnFragata);
-		btnFragata.addActionListener(Controlador.getControlador());
-		
-		JPanel direcciones = new JPanel();
-		menuPonerBarcos.add(direcciones);
-		
-		JButton btnArriba = new JButton("Arriba");
-		direcciones.add(btnArriba);
-		btnArriba.addActionListener(Controlador.getControlador());
-		
-		JButton btnAbajo = new JButton("Abajo");
-		direcciones.add(btnAbajo);
-		btnAbajo.addActionListener(Controlador.getControlador());
-		
-		JButton btnDerecha = new JButton("Derecha");
-		direcciones.add(btnDerecha);
-		btnDerecha.addActionListener(Controlador.getControlador());
-		
-		JButton btnIzquierda = new JButton("Izquierda");
-		direcciones.add(btnIzquierda);
-		btnIzquierda.addActionListener(Controlador.getControlador());
+				menuPonerBarcos = new JPanel();
+				menuPosicionar.add(menuPonerBarcos);
+				menuPonerBarcos.setLayout(new GridLayout(2, 1, 0, 0));
+				
+				JPanel barcos = new JPanel();
+				menuPonerBarcos.add(barcos);
+				barcos.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+				
+				JButton btnPortaviones = new JButton("Portaviones");
+				barcos.add(btnPortaviones);
+				btnPortaviones.addActionListener(Controlador.getControlador());
+				
+				JButton btnSubmarino = new JButton("Submarino");
+				barcos.add(btnSubmarino);
+				btnSubmarino.addActionListener(Controlador.getControlador());
+				
+				JButton btnDestructor = new JButton("Destructor");
+				barcos.add(btnDestructor);
+				btnDestructor.addActionListener(Controlador.getControlador());
+				
+				JButton btnFragata = new JButton("Fragata");
+				barcos.add(btnFragata);
+				btnFragata.addActionListener(Controlador.getControlador());
+				
+				JPanel direcciones = new JPanel();
+				menuPonerBarcos.add(direcciones);
+				
+				JButton btnArriba = new JButton("Arriba");
+				direcciones.add(btnArriba);
+				btnArriba.addActionListener(Controlador.getControlador());
+				
+				JButton btnAbajo = new JButton("Abajo");
+				direcciones.add(btnAbajo);
+				btnAbajo.addActionListener(Controlador.getControlador());
+				
+				JButton btnDerecha = new JButton("Derecha");
+				direcciones.add(btnDerecha);
+				btnDerecha.addActionListener(Controlador.getControlador());
+				
+				JButton btnIzquierda = new JButton("Izquierda");
+				direcciones.add(btnIzquierda);
+				btnIzquierda.addActionListener(Controlador.getControlador());
 		
 		
 		
@@ -273,7 +281,7 @@ public class Vista extends JFrame implements Observer {
 			//Cambio de estado
 			if(arg instanceof Integer) {
 				if((int)arg==1) {
-					this.menuPonerBarcos.setVisible(false);
+					this.menuPosicionar.setVisible(false);
 					this.menuAcciones.setVisible(true);
 					this.lblSeleccion.setText("Accion Seleccionada: ");
 					this.estado=(int) arg;

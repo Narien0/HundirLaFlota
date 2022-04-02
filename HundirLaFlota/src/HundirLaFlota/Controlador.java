@@ -47,6 +47,8 @@ public class Controlador implements ActionListener, MouseListener {
 			Modelo.getModelo().recibirDir(1);
 		}else if(((JButton) e.getSource()).getText().equals("Izquierda")) {
 			Modelo.getModelo().recibirDir(3);
+		}else if(((JButton) e.getSource()).getText().equals("Limpiar Tablero")) {
+			Modelo.getModelo().limpiarTableroUsuario();
 		}
 	}
 

@@ -180,4 +180,8 @@ public class Modelo extends Observable {
 		}
 		return res;
 	}
+	
+	public void limpiarTableroUsuario() {
+		this.usuario= new Jugador();
+	}
 }
