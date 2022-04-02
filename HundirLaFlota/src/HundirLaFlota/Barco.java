@@ -38,7 +38,7 @@ public class Barco {
 		this.protegido = b;
 	}
 	
-	public void tocado() {
+	public void tocado() {//Comprueba si el barco se ha undido despues de ser tocado cada vez
 		boolean b = true;
 		TBarco aux;
 		Iterator<TBarco> itr = this.lTBarcos.iterator();

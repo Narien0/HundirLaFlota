@@ -16,7 +16,7 @@ public class Agua extends Tile {
 	
 	public void setOcupado(boolean b) {
 		this.ocupado=b;
-//		System.out.println(""+this.coordX+this.coordY);
+//		System.out.println(""+this.coordX+this.coordY); //Usado para visualizar el espacio de agua ocupado al poner barcos en testeo
 //		Vista.getVista().TESTOCUPADO(coordX, coordY);
 	}
 

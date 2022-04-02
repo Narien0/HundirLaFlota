@@ -30,11 +30,6 @@ public class Tile extends Observable{
 		notifyObservers(-1);
 	}
 
-	public void actVista() {
-		// TODO - implement Tile.actVista
-		throw new UnsupportedOperationException();
-	}
-
 	public void ejecutar(Accion a) {
 		// TODO - implement Tile.ejecutar
 		//throw new UnsupportedOperationException();

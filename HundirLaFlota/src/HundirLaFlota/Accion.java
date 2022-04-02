@@ -12,7 +12,6 @@ public abstract class Accion {
 	 */
 	public void ejecutarse(Tile pT) {
 		// TODO - implement Accion.ejecutarse
-		throw new UnsupportedOperationException();
 	}
 
 }

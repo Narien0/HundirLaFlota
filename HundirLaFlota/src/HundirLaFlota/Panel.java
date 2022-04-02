@@ -17,18 +17,6 @@ public class Panel {
 	 * 
 	 * @param x
 	 * @param y
-	 */
-	/*private*/ public Tile buscarTileIndice(int x, int y) {
-		// TODO - implement Panel.buscarTileIndice
-		return Arrays.stream(lTiles) // Stream<Tile[]>
-					.flatMap(Arrays::stream)
-						.filter(t -> t.coordX == x && t.coordY == y).findFirst().orElse(null);
-	}
-
-	/**
-	 * 
-	 * @param x
-	 * @param y
 	 * @param pTam
 	 * @param pCodDIr
 	 */
@@ -89,10 +77,7 @@ public class Panel {
 //		t.revelar();
 		this.lTiles[x][y]=tB;
 	}
-	
-	public void revelarTileEnPos(int x, int y) {
-		this.lTiles[x][y].revelar();
-	}
+
 	
 	/**
 	 * 

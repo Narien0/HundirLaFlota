@@ -15,7 +15,7 @@ public class Jugador extends Observable{
 
 	public Jugador() {
 		this.dinero = 50;
-		this.cantBomb = 40;
+		this.cantBomb = 100;
 		this.cantMisil = 5;
 		this.panel=new Panel();
 		this.lBarcos = new ArrayList[5];
@@ -29,14 +29,20 @@ public class Jugador extends Observable{
 	 * 
 	 * @param a
 	 */
-	public void consumirRecuro(Accion a) {
+	public boolean consumirRecuro(Accion a) {
 		// TODO - implement Jugador.consumirRecuro
 		//throw new UnsupportedOperationException();
+		boolean sePuede = false;
 		if (a instanceof Bomba) {
+			sePuede = (this.cantBomb>0);
 			cantBomb--;
 		}else if (a instanceof Misil) {
+			sePuede = (this.cantMisil>0);
 			cantMisil--;
+		}else if (a instanceof Seleccion) {
+			sePuede = true;
 		}
+		return sePuede;
 	}
 
 	/**
@@ -61,7 +67,7 @@ public class Jugador extends Observable{
 	public boolean ponerBarco(int x, int y, int pTam, int pCodDir) {
 		// TODO - implement Jugador.ponerBarco
 		boolean res;
-		if (this.lBarcos[pTam].size()<5-pTam && panel.sePuedePoner(x,y,pTam,pCodDir)) { //!!! cOMENTADO PORQUE NO PERMITE PONER BARCOS CUANDO DEBERIA
+		if (this.lBarcos[pTam].size()<5-pTam && panel.sePuedePoner(x,y,pTam,pCodDir)) { 
 			res = true;
 			int i = 0;
 			Barco b = new Barco(pTam);

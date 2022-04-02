@@ -17,7 +17,6 @@ public class IA extends Jugador {
 
 	public void ponerBarcosInteligente() {
 		boolean[][] buscar = new boolean[10][10];
-//		System.out.println("eses");
 		ArrayList<Integer> lista = new ArrayList<Integer>();
 		int cont1=1;
 		int tamMax = 4;
@@ -31,24 +30,18 @@ public class IA extends Jugador {
 			}
 			tam--;
 		}
-//		System.out.println(lista.size());
-//		System.out.println("pasa");
 		for (int i=0;i<10;i++) {
 			for (int j=0;j<10;j++) {
 				buscar[i][j] = true; //True indica en q pos no se ha buscado
 			}
 		}
-//		System.out.println("Boolean a true");
 		int intentos = 0;
 		while(!lista.isEmpty() && intentos <100){
 			intentos++;
-//			System.out.println("Largo");
-			System.out.println(intentos);
 			boolean puesto = false;
 			int cont = 0;
 			int x = (int)(Math.random()*10);
-			int y = (int)(Math.random()*10);	
-//			System.out.println(x + " " + y);
+			int y = (int)(Math.random()*10);
 			int pCodDir = (int)(Math.random()*4);
 			int pTam = lista.get(0);
 			while (!puesto && cont < 4) {		
@@ -56,7 +49,6 @@ public class IA extends Jugador {
 				if (!puesto) {
 				pCodDir = this.rotar(pCodDir);
 				}
-//				System.out.println("Posicion");
 				cont++;
 			}
 		if (puesto) {
@@ -94,15 +86,9 @@ public class IA extends Jugador {
 			}
 			indx=xinic-1;
 			while(indx<=xfin+1) {
-//				System.out.println("patata");
-//				System.out.println(indx);
-//				System.out.println(xfin);
 				if(indx>=0&&indx<10) {
 					indy=yinic-1;
 					while(indy<=yfin+1) {
-//						System.out.println("lechuga");
-//						System.out.println(indy);
-//						System.out.println(yfin);
 						if(indy>=0 && indy<10) {
 							buscar[indx][indy] = false;							
 							}
@@ -168,10 +154,10 @@ public class IA extends Jugador {
 		}
 	}
 	
-	/* 
+	
 	@Override //METODO PARA QUE NO SE MUESTREN LOS BARCOS PUESTOS POR LA IA
 	protected void ponerTBPanel(int x, int y, TBarco tb) {
 		this.panel.ponerTileEnPos(x, y, tb);
-	}*/
+	}
 
 }

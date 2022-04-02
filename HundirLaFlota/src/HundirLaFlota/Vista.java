@@ -238,7 +238,7 @@ public class Vista extends JFrame implements Observer {
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		if (o instanceof Tile) {
-			JLabel aux = this.buscarPanel(((Tile) o).getCoordX(),((Tile) o).getCoordY());
+			JLabel aux = this.buscarLabel(((Tile) o).getCoordX(),((Tile) o).getCoordY());
 			if((Integer)arg==0) {
 				if(o instanceof Agua) {
 					if(aux.getBackground().equals(cAgua) && estado ==1) {
@@ -259,6 +259,8 @@ public class Vista extends JFrame implements Observer {
 					this.antSeleccion = aux; 
 				}
 			}
+			
+			
 		}else if (o instanceof Jugador) {
 			String aux;
 			if(((Integer)arg)==1) {
@@ -277,6 +279,8 @@ public class Vista extends JFrame implements Observer {
 				union =lblBarcosusr;
 			}
 			union.setText(union.getText() +" "+ aux);
+			
+			
 		}else if (o instanceof Modelo) {
 			//Cambio de estado
 			if(arg instanceof Integer) {
@@ -307,7 +311,7 @@ public class Vista extends JFrame implements Observer {
 		}
 	}
 	
-	private JLabel buscarPanel(int x, int y) {
+	private JLabel buscarLabel(int x, int y) {
 		JLabel[][] matriz;
 		if(this.estado==0) {
 			if(this.turnoUsr) matriz = this.gIzq;
@@ -324,11 +328,8 @@ public class Vista extends JFrame implements Observer {
 		jl.setForeground(cl);
 	}
 	
-	public boolean getTurnoUsr() {
-		return this.turnoUsr;
-	}
 	
-	public void TESTOCUPADO(int x, int y) {
-		gIzq[x][y].setBackground(Color.green);;
-	}
+//	public void TESTOCUPADO(int x, int y) { //Usado para visualizar el espacio de agua ocupado al poner barcos en testeo
+//		gIzq[x][y].setBackground(Color.green);;
+//	}
 }

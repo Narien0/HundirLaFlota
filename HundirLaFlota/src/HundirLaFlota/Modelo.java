@@ -62,13 +62,15 @@ public class Modelo extends Observable {
 			j1 = this.ia;
 			j2 = this.usuario;
 		}
-		j1.consumirRecuro(this.accionCargada);
-		j2.actuarSobre(this.accionCargada, x, y);
-		if(estado==1)this.cambioTurno();
-		if(j2.todosHundidos()&&estado==1) {
-			this.cambioEstado();
-			this.pierde(j2);
-			this.accionCargada=null;
+		boolean recursosSuficientes = j1.consumirRecuro(this.accionCargada);
+		if (recursosSuficientes) {
+			j2.actuarSobre(this.accionCargada, x, y);
+			if(estado==1)this.cambioTurno();
+			if(j2.todosHundidos()&&estado==1) {
+				this.cambioEstado();
+				this.pierde(j2);
+				this.accionCargada=null;
+			}
 		}
 		this.accionCargada = null;
 	}
@@ -164,7 +166,6 @@ public class Modelo extends Observable {
 		else msg="Gana el jugador. Pierde el ordenador";
 		setChanged();
 		notifyObservers(msg);
-		System.out.println(msg);
 	}
 	
 	private boolean tableroApropiadoAlTurno(char c) {

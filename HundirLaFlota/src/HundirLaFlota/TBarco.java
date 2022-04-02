@@ -28,7 +28,7 @@ public class TBarco extends Tile {
 	}
 	
 	public void anadirABarco(Barco ba) {
-		this.barco=ba;
+			this.barco=ba;
 	}
 	
 	public void tocarEntero() {
