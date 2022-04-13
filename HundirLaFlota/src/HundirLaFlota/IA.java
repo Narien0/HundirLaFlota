@@ -20,7 +20,7 @@ public class IA extends Jugador {
 		ArrayList<Integer> lista = new ArrayList<Integer>();
 		int cont1=1;
 		int tamMax = 4;
-
+		
 		int tam = tamMax;
 		while(tam>=1) {
 			cont1=1;
@@ -112,11 +112,20 @@ public class IA extends Jugador {
 	}
 	
 
-	public void realizarAccionInteligente() {		
+	public void realizarAccionInteligente() {
 		int accion = (int) (Math.random()*2);
-		Modelo.getModelo().cargarAccion(accion);
+		if(this.lArmas.get(accion)>0) this.lArmas.add(accion,this.lArmas.get(accion)-1);
+		else {
+			accion = 0;
+			this.lArmas.add(accion,this.lArmas.get(accion)-1);
+		}
+//		if(accion==1 && this.cantMisil<1)accion=0;
+//		if(accion==0 && this.cantBomb<1)accion=1;
+//		Modelo.getModelo().cargarAccion(accion);
+		Actuador.getActuador().almacenarAccion(accion);
 		int x = (int) (Math.random()*10);
 		int y = (int) (Math.random()*10);
+		Actuador.getActuador().almacenarPos(x, y, 0);
 		int cont = 0;
 		while (this.probados[x][y]==true && cont<=1000) {
 			x = (int) (Math.random()*10);
@@ -138,7 +147,8 @@ public class IA extends Jugador {
 				}
 			}
 		}
-		Modelo.getModelo().recibirPos(x, y, 'I');
+//		Modelo.getModelo().recibirPos(x, y, 'I');
+		Actuador.getActuador().actuarContra(0);
 		probados[x][y]=true;
 	}
 	
@@ -149,8 +159,10 @@ public class IA extends Jugador {
 			lleno = lleno && (this.lBarcos[i].size() == 5-i);
 		}
 		if(lleno) {
-			Modelo.getModelo().cambioTurno();
-			Modelo.getModelo().cambioEstado();
+			setChanged();
+			notifyObservers(true);
+			setChanged();
+			notifyObservers(false);
 		}
 	}
 	
@@ -158,6 +170,7 @@ public class IA extends Jugador {
 	@Override //METODO PARA QUE NO SE MUESTREN LOS BARCOS PUESTOS POR LA IA
 	protected void ponerTBPanel(int x, int y, TBarco tb) {
 		this.panel.ponerTileEnPos(x, y, tb);
+		tb.revelar();
 	}
 
 }

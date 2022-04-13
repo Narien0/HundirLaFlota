@@ -28,27 +28,48 @@ public class Controlador implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(((JButton) e.getSource()).getText().equals("Bomba")) {
-			Modelo.getModelo().cargarAccion(0);
+			Actuador.getActuador().almacenarAccion(0);
+			GestorTurno.getGestorTurno().actuar();
+			//Modelo.getModelo().cargarAccion(0);
 		}else if(((JButton) e.getSource()).getText().equals("Misil")) {
-			Modelo.getModelo().cargarAccion(1);
+			Actuador.getActuador().almacenarAccion(1);
+			GestorTurno.getGestorTurno().actuar();
+			//Modelo.getModelo().cargarAccion(1);
 		}else if(((JButton) e.getSource()).getText().equals("Portaviones")) {
-			Modelo.getModelo().recibirTamano(4);
+			Actuador.getActuador().almacenarTamBarco(4);
+			GestorTurno.getGestorTurno().actuar();
+			//Modelo.getModelo().recibirTamano(4);
 		}else if(((JButton) e.getSource()).getText().equals("Submarino")) {
-			Modelo.getModelo().recibirTamano(3);
+			Actuador.getActuador().almacenarTamBarco(3);
+			GestorTurno.getGestorTurno().actuar();
+			//Modelo.getModelo().recibirTamano(3);
 		}else if(((JButton) e.getSource()).getText().equals("Destructor")) {
-			Modelo.getModelo().recibirTamano(2);
+			Actuador.getActuador().almacenarTamBarco(2);
+			GestorTurno.getGestorTurno().actuar();
+			//Modelo.getModelo().recibirTamano(2);
 		}else if(((JButton) e.getSource()).getText().equals("Fragata")) {
-			Modelo.getModelo().recibirTamano(1);
+			Actuador.getActuador().almacenarTamBarco(1);
+			GestorTurno.getGestorTurno().actuar();
+			//Modelo.getModelo().recibirTamano(1);
 		}else if(((JButton) e.getSource()).getText().equals("Arriba")) {
-			Modelo.getModelo().recibirDir(0);
+			Actuador.getActuador().almacenarDireccion(0);
+			GestorTurno.getGestorTurno().actuar();
+			//Modelo.getModelo().recibirDir(0);
 		}else if(((JButton) e.getSource()).getText().equals("Abajo")) {
-			Modelo.getModelo().recibirDir(2);
+			Actuador.getActuador().almacenarDireccion(2);
+			GestorTurno.getGestorTurno().actuar();
+			//Modelo.getModelo().recibirDir(2);
 		}else if(((JButton) e.getSource()).getText().equals("Derecha")) {
-			Modelo.getModelo().recibirDir(1);
+			Actuador.getActuador().almacenarDireccion(1);
+			GestorTurno.getGestorTurno().actuar();
+			//Modelo.getModelo().recibirDir(1);
 		}else if(((JButton) e.getSource()).getText().equals("Izquierda")) {
-			Modelo.getModelo().recibirDir(3);
+			Actuador.getActuador().almacenarDireccion(3);
+			GestorTurno.getGestorTurno().actuar();
+			//Modelo.getModelo().recibirDir(3);
 		}else if(((JButton) e.getSource()).getText().equals("Limpiar Tablero")) {
-			Modelo.getModelo().limpiarTableroUsuario();
+			GestorTurno.getGestorTurno().limpiarTableroTurno();
+			//Modelo.getModelo().limpiarTableroUsuario();
 		}
 	}
 
@@ -59,8 +80,12 @@ public class Controlador implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 		int x = ((JLabel)e.getSource()).getText().charAt(0) - '0';
 		int y = ((JLabel)e.getSource()).getText().charAt(1) - '0';
-		char tab = ((JLabel)e.getSource()).getText().charAt(2);
-		Modelo.getModelo().recibirPos(x, y,tab);
+		int tab = ((JLabel)e.getSource()).getText().charAt(2) - '0';
+		Actuador.getActuador().almacenarPos(x, y, tab);
+		GestorTurno.getGestorTurno().tableroApropiado(tab);
+		GestorTurno.getGestorTurno().actuar();
+//		char tab = ((JLabel)e.getSource()).getText().charAt(2);
+//		Modelo.getModelo().recibirPos(x, y,tab);
 	}
 
 	@Override

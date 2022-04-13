@@ -75,6 +75,7 @@ public class Vista extends JFrame implements Observer {
 	
 	public Vista() {
 		this.estado = 0;
+		this.turnoUsr = true;
 		
 		this.gDer = new JLabel[10][10];
 		this.gIzq = new JLabel[10][10];
@@ -108,7 +109,7 @@ public class Vista extends JFrame implements Observer {
 		JLabel aux;
 		for (int i=0;i<10;i++) {
 			for (int j=0;j<10;j++) {
-				aux = new JLabel(j+""+i+"I");
+				aux = new JLabel(j+""+i+/*"I"*/0);
 				aux.setOpaque(true);
 				this.cambiarColorCasilla(aux, Color.DARK_GRAY);
 				aux.addMouseListener(Controlador.getControlador());
@@ -124,7 +125,7 @@ public class Vista extends JFrame implements Observer {
 		
 		for (int i=0;i<10;i++) {
 			for (int j=0;j<10;j++) {
-				aux = new JLabel(j+""+i+"D");
+				aux = new JLabel(j+""+i+/*"D"*/1);
 				aux.setOpaque(true);
 				this.cambiarColorCasilla(aux, Color.DARK_GRAY);
 				aux.addMouseListener(Controlador.getControlador());
@@ -261,41 +262,50 @@ public class Vista extends JFrame implements Observer {
 			}
 			
 			
-		}else if (o instanceof Jugador) {				//Llamada desde Jugador
-			String aux;									//Añade los barcos puestos hasta ahora
-			if(((Integer)arg)==1) {
-				aux="F";
-			}else if(((Integer)arg)==2) {
-				aux="D";
-			}else if(((Integer)arg)==3) {
-				aux="S";
-			}else {
-				aux="P";
+		}else if (o instanceof Jugador) {						//Llamada desde Jugador
+			if (arg instanceof Integer) {
+				String aux = "";									//Añade los barcos puestos hasta ahora
+				if(((Integer)arg)==1) {
+					aux="F";
+				}else if(((Integer)arg)==2) {
+					aux="D";
+				}else if(((Integer)arg)==3) {
+					aux="S";
+				}else if (((Integer)arg)==4){
+					aux="P";
+				}
+				JLabel union;
+				if(o instanceof IA) {
+					union = lblBarcosia;
+				}else {
+					union =lblBarcosusr;
+				}
+				union.setText(union.getText() +" "+ aux);
 			}
-			JLabel union;
-			if(o instanceof IA) {
-				union = lblBarcosia;
-			}else {
-				union =lblBarcosusr;
-			}
-			union.setText(union.getText() +" "+ aux);
 			
 			
-		}else if (o instanceof Modelo) {				//Llamada desde Modelo
+		}else if (o instanceof GestorTurno) {				//Llamada desde Modelo
 			//Cambio de estado
 			if(arg instanceof Integer) {	//Cambios de estado
 				if((int)arg==1) {		//Cambio a estado 1 (de poner barcos a actuar)
 					this.menuPosicionar.setVisible(false);
 					this.menuAcciones.setVisible(true);
 					this.lblSeleccion.setText("Accion Seleccionada: ");
-					this.estado=(int) arg;
 				}else if((int)arg==2) {	//Cambio a estado 2 (fin de partida)
 					this.menuAcciones.setVisible(false);
 					this.panelInfo.setVisible(false);
+					if(this.turnoUsr) this.lblGana.setText(this.lblGana.getText()+" Jugador");
+					else this.lblGana.setText(this.lblGana.getText()+" Ordenador");
 					this.panelFin.setVisible(true);
-					this.estado=(int) arg;
 				}
-			}else if(arg instanceof String) {	//Cambios de selección
+				this.estado=(int) arg;
+			}
+			else if(arg instanceof Boolean){ //Cambio de turno
+				this.turnoUsr = (boolean) arg;
+				
+			}
+		}else if(o instanceof Actuador) {
+			if(arg instanceof String) {	//Cambios de selección
 				if(estado == 0 ) {	//Cambio de barco seleccionado
 					String selec = "Barco Seleccionado: "  + arg; 
 					lblSeleccion.setText(selec);
@@ -305,8 +315,6 @@ public class Vista extends JFrame implements Observer {
 				}else {				//Escribir mensaje de fin de partida
 					this.lblGana.setText((String)arg);
 				}
-			}else /*if(arg instanceof Boolean)*/{ //Cambio de turno
-				this.turnoUsr = (boolean) arg;
 			}
 		}
 	}

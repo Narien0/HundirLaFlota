@@ -9,6 +9,7 @@ public class TBarco extends Tile {
 		// TODO - implement TBarco.TBarco
 		super(pCoordX,pCoordY,pOc);
 		this.tocado = false;
+//		System.out.println(this.coordX+"  "+this.coordY);
 	}
 
 	public boolean getTocado() {
