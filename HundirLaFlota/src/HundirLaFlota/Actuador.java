@@ -40,6 +40,9 @@ public class Actuador extends Observable{
 		}else if(pCodAcc==1) {
 			this.accionAlmacenada = new Misil();
 			notificacion = "Misil";
+		}else if(pCodAcc==3) {
+			this.accionAlmacenada = new Radar();
+			notificacion = "Radar";
 		}
 			setChanged();
 			notifyObservers(notificacion);
@@ -68,7 +71,6 @@ public class Actuador extends Observable{
 	}
 	
 	public void seleccionarPos(int posJug) {
-//		System.out.println(this.posXAlmacenada + ""+ this.posYAlmacenada + posJug);
 		Jugador jaux = this.lJugadores.get(posJug);
 		if(!(jaux instanceof IA) && this.posXAlmacenada >= 0 && this.posYAlmacenada >= 0) jaux.actuarSobre(new Seleccion(), this.posXAlmacenada, this.posYAlmacenada);
 	}
@@ -81,8 +83,12 @@ public class Actuador extends Observable{
 				((IA) jaux).ponerBarcosInteligente();
 			}
 			else puestoCorrectamente = jaux.ponerBarco(this.posXAlmacenada, this.posYAlmacenada, this.tamanoAlmacenado, this.direccionAlmacenada);
-			if (puestoCorrectamente) this.resetAlmacenado();
+			if (puestoCorrectamente)
+				this.resetAlmacenado();
+				setChanged();
+				notifyObservers("");
 		}
+		
 	}
 	
 	public boolean actuar(int posJug){
@@ -91,7 +97,6 @@ public class Actuador extends Observable{
 		boolean res = false;
 		res = this.almacenNecesarioAccion();
 		Jugador jaux = this.lJugadores.get(posJug);
-		System.out.println("yy"+jaux);
 		if(jaux instanceof IA) {
 			res = true;
 			((IA) jaux).realizarAccionInteligente();
@@ -111,6 +116,8 @@ public class Actuador extends Observable{
 	public void actuarContra(int posOp) {
 		Jugador jOponente = this.lJugadores.get(posOp);
 		jOponente.actuarSobre(this.accionAlmacenada, this.posXAlmacenada, this.posYAlmacenada);
+		setChanged();
+		notifyObservers("");
 	}
 	
 	private boolean accionSobreSiMismo() {

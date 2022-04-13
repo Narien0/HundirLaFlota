@@ -72,6 +72,8 @@ public class Vista extends JFrame implements Observer {
 	private Color cSeleccion;
 	private Color cOculto;
 	private Color cTocado;
+	private Color cRadar;
+	private Color cEscudo;
 	
 	public Vista() {
 		this.estado = 0;
@@ -86,6 +88,8 @@ public class Vista extends JFrame implements Observer {
 		this.cSeleccion = Color.gray;
 		this.cOculto = Color.darkGray;
 		this.cTocado = Color.red;
+		this.cRadar = Color.yellow;
+		this.cEscudo = Color.green;
 		
 		/// Creacion general
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -150,6 +154,10 @@ public class Vista extends JFrame implements Observer {
 		JButton btnMisil = new JButton("Misil");
 		menuAcciones.add(btnMisil);
 		btnMisil.addActionListener(Controlador.getControlador());
+		
+		JButton btnRadar = new JButton("Radar");
+		menuAcciones.add(btnRadar);
+		btnRadar.addActionListener(Controlador.getControlador());
 		
 		menuPosicionar = new JPanel();
 		pnlBajo.add(menuPosicionar);
@@ -251,6 +259,10 @@ public class Vista extends JFrame implements Observer {
 				else if(o instanceof TBarco)	this.cambiarColorCasilla(aux, this.cBarco);
 			}else if ((Integer)arg==1) {//TBarco tocado
 				this.cambiarColorCasilla(aux, this.cTocado);
+			}else if ((Integer)arg==2) {
+				this.cambiarColorCasilla(aux, this.cEscudo);
+			}else if ((Integer)arg==3) {
+				this.cambiarColorCasilla(aux, this.cRadar);
 			}else if ((Integer)arg==-1) {//Se selecciona una casilla sobre la que colocar
 				if(this.antSeleccion!=null && this.antSeleccion.getBackground().equals(this.cSeleccion)) {
 					this.cambiarColorCasilla(this.antSeleccion, this.cAgua); 

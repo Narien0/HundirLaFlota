@@ -35,6 +35,9 @@ public class Controlador implements ActionListener, MouseListener {
 			Actuador.getActuador().almacenarAccion(1);
 			GestorTurno.getGestorTurno().actuar();
 			//Modelo.getModelo().cargarAccion(1);
+		}else if(((JButton) e.getSource()).getText().equals("Radar")) {
+			Actuador.getActuador().almacenarAccion(3);
+			GestorTurno.getGestorTurno().actuar();
 		}else if(((JButton) e.getSource()).getText().equals("Portaviones")) {
 			Actuador.getActuador().almacenarTamBarco(4);
 			GestorTurno.getGestorTurno().actuar();

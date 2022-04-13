@@ -86,7 +86,44 @@ public class Panel {
 	 * @param a
 	 */
 	public void accionarTile(int x, int y, Accion a) {
-		this.lTiles[x][y].ejecutar(a);
+		if (a instanceof Radar) {
+			usarRadar(x,y);
+		}
+		else{
+			this.lTiles[x][y].ejecutar(a);
+		}
+	}
+	
+	private void usarRadar(int x, int y) {
+		int radio = 1;
+		int indx;
+		int indy;
+		int xinic;
+		int xfin;
+		int yinic;
+		int yfin;
+		xinic=x-radio; 
+		xfin=x+radio;
+		yinic=y-radio;
+		yfin=y+radio;
+		indx=xinic;
+		indy=yinic;
+//		System.out.println("X:"+x+"   Y:"+y + "     -- Radio:"+radio + "   Inic "+xinic+","+yinic+"   Fin "+xfin+","+yfin);
+		while(indx<=xfin) {
+			if(indx>=0&&indx<10) {
+				while(indy<=yfin) {
+					if(indy>=0 && indy<10) {
+//						System.out.println(indx+ "  "+ indy);
+						if(this.lTiles[indx][indy] instanceof TBarco) {
+							((TBarco)this.lTiles[indx][indy]).mostrar();
+						}
+					}
+					indy++;
+				}
+				indy=yinic;
+			}
+			indx++;
+		}
 	}
 	
 	public void llenarAgua(){

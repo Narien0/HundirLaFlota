@@ -43,4 +43,9 @@ public class TBarco extends Tile {
 		}
 	}
 
+	public void mostrar() {
+		setChanged();
+		notifyObservers(3);
+	}
+
 }

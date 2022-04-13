@@ -20,7 +20,7 @@ public class Jugador extends Observable{
 		this.lArmas.add(0,100); //Bombas
 		this.lArmas.add(1,5); //Misiles
 		this.lArmas.add(2,2); //Escudos
-		this.lArmas.add(2,2); //Radares
+		this.lArmas.add(3,5); //Radares
 		this.panel=new Panel();
 		this.lBarcos = new ArrayList[5];
 		for (int i = 1; i<5;i++) {
@@ -36,11 +36,13 @@ public class Jugador extends Observable{
 	 */
 	public boolean consumirRecuro(Accion a) {
 		boolean sePuede = false;
-		int pos = 14;
+		int pos = -1;
 		if (a instanceof Bomba) {
 			pos = 0;
 		}else if (a instanceof Misil) {
 			pos = 1;
+		}else if (a instanceof Radar) {
+			pos = 3;
 		}else if (a instanceof Seleccion) {
 			pos = -1;
 			sePuede = true;

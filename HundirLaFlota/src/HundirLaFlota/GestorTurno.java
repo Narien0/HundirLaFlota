@@ -45,7 +45,6 @@ public class GestorTurno extends Observable implements Observer{
 	}
 	
 	public void cambioTurno(){
-		System.out.println("A"+this.turno);
 		this.turno++;
 		if(!(turno<numJug)) {
 			turno = 0;
@@ -54,16 +53,13 @@ public class GestorTurno extends Observable implements Observer{
 		setChanged();
 		notifyObservers(param);
 		
-		System.out.println("B"+this.turno);
 		if(this.esTurnoIA()){
-			System.out.println(turno);
 			this.actuar();
 		}
 		
 	}
 	
 	public void cambioEstado(){
-		System.out.println("Estado: "+ estado);
 		this.estado++;
 		setChanged();
 		notifyObservers(this.estado);
