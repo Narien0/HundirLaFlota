@@ -44,7 +44,7 @@ public class Actuador extends Observable{
 			this.accionAlmacenada = new Misil();
 			notificacion = "Misil";
 		}else if(pCodAcc==3) {
-			this.accionAlmacenada = new Radar();
+			this.accionAlmacenada = new ConsultaRadar();
 			notificacion = "Radar";
 		}else if(pCodAcc==-1) {
 			this.accionAlmacenada = new Seleccion();
@@ -90,9 +90,10 @@ public class Actuador extends Observable{
 		this.posTablero = pObj;
 		int x = (int)(Math.random()*10);
 		int y = (int)(Math.random()*10);
-		jaux.setRadX(x);
-		jaux.setRadY(y);
-		jaux.setRadTab(pObj);
+		jaux.setRadar(x, y, pObj);
+//		jaux.setRadX(x);
+//		jaux.setRadY(y);
+//		jaux.setRadTab(pObj);
 //		System.out.print(pAct);
 //		System.out.println(" generarPosRadar   "+jaux.getRadX()+"  "+ jaux.getRadY());
 	}
@@ -131,7 +132,7 @@ public class Actuador extends Observable{
 		boolean res = false;
 //		if(this.accionAlmacenada instanceof Radar && !this.posDeRadarCargada) this.obtenerPosRadarAlmacenada(posJug);
 //		else if(!(this.accionAlmacenada instanceof Radar) && this.posDeRadarCargada) this.resetAlmacenado();
-		if(this.accionAlmacenada instanceof Radar) {
+		if(this.accionAlmacenada instanceof ConsultaRadar) {
 //			System.out.println(". O .");
 			this.obtenerPosRadarAlmacenada(posJug);
 		}

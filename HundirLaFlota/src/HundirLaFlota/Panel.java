@@ -86,7 +86,7 @@ public class Panel {
 	 * @param a
 	 */
 	public void accionarTile(int x, int y, Accion a) {
-		if (a instanceof Radar) {
+		if (a instanceof ConsultaRadar) {
 			usarRadar(x,y);
 		}
 		else{

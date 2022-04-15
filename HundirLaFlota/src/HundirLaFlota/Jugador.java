@@ -11,11 +11,12 @@ public class Jugador extends Observable{
 	protected Collection<Barco>[] lBarcos;
 	protected ArrayList<Integer> lArmas;
 	protected Panel panel;
+	protected Radar radar;
 	
 	//Para radar
-	protected int radX;
-	protected int radY;
-	protected int radTab;
+//	protected int radX;
+//	protected int radY;
+//	protected int radTab;
 
 	public Jugador() {
 		this.dinero = 50;
@@ -31,9 +32,10 @@ public class Jugador extends Observable{
 			this.lBarcos[i]= new ArrayList<Barco>();			
 		}
 		
-		this.radX = -1;
-		this.radY = -1;
-		this.radTab = -1;
+		this.radar = null;
+//		this.radX = -1;
+//		this.radY = -1;
+//		this.radTab = -1;
 		
 		this.addObserver(Vista.getVista());
 		this.addObserver(GestorTurno.getGestorTurno());
@@ -50,7 +52,7 @@ public class Jugador extends Observable{
 			pos = 0;
 		}else if (a instanceof Misil) {
 			pos = 1;
-		}else if (a instanceof Radar) {
+		}else if (a instanceof ConsultaRadar) {
 			pos = 3;
 		}else if (a instanceof Seleccion) {
 			pos = -1;
@@ -71,7 +73,7 @@ public class Jugador extends Observable{
 	 */
 	public void actuarSobre(Accion a, int x, int y) {
 		this.panel.accionarTile(x, y, a);
-		if(!(a instanceof Seleccion || a instanceof Radar)) { //Se puede usar esto o la linea comentada en actuar de gestor turno
+		if(!(a instanceof Seleccion || a instanceof ConsultaRadar)) { //Se puede usar esto o la linea comentada en actuar de gestor turno
 			setChanged();
 			notifyObservers(true);
 			this.todosHundidos();
@@ -185,11 +187,18 @@ public class Jugador extends Observable{
 	}
 	
 	
-	public int getRadX() {return this.radX;}
-	public int getRadY() {return this.radY;}
-	public int getRadTab() {return this.radTab;}
-	public void setRadX(int x) {this.radX=x;}
-	public void setRadY(int y) {this.radY=y;}
-	public void setRadTab(int tab) {this.radTab=tab;}
+//	public int getRadX() {return this.radX;}
+//	public int getRadY() {return this.radY;}
+//	public int getRadTab() {return this.radTab;}
+//	public void setRadX(int x) {this.radX=x;}
+//	public void setRadY(int y) {this.radY=y;}
+//	public void setRadTab(int tab) {this.radTab=tab;}
+	public void setRadar(int x, int y, int tab) {
+		this.radar = new Radar(x,y,tab);
+	}
+	public int getRadX() {return this.radar.getX();}
+	public int getRadY() {return this.radar.getY();}
+	public int getRadTab() {return this.radar.getTab();}
+	
 
 }

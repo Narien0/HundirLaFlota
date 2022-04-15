@@ -6,7 +6,6 @@ public class IA extends Jugador {
 
 	private boolean [][] probados;
 	
-	private int CUENTAPRUEBA;
 
 	public IA() {
 		this.probados = new boolean[10][10];
@@ -15,7 +14,6 @@ public class IA extends Jugador {
 				probados[i][j]=false;
 			}
 		}
-		this.CUENTAPRUEBA = 0;
 	}
 
 	public void ponerBarcosInteligente() {
@@ -134,7 +132,7 @@ public class IA extends Jugador {
 		if(accion==2) {
 			//Espacio de entre que se implementa escudo
 		}else if(accion==3) {
-			if(this.radX==-1) {//Comprobación de si se ha generado una radar ya
+			if(this.radar==null) {//Comprobación de si se ha generado una radar ya
 				this.ponerRadar();
 			}
 			Actuador.getActuador().obtenerPosRadarAlmacenada(1);
