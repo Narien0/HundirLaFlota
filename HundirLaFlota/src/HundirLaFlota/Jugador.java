@@ -9,23 +9,32 @@ public class Jugador extends Observable{
 
 	private double dinero;
 	protected Collection<Barco>[] lBarcos;
-//	protected int cantBomb;
-//	protected int cantMisil;
 	protected ArrayList<Integer> lArmas;
 	protected Panel panel;
+	
+	//Para radar
+	protected int radX;
+	protected int radY;
+	protected int radTab;
 
 	public Jugador() {
 		this.dinero = 50;
 		this.lArmas = new ArrayList<Integer>();
 		this.lArmas.add(0,100); //Bombas
 		this.lArmas.add(1,5); //Misiles
-		this.lArmas.add(2,2); //Escudos
-		this.lArmas.add(3,5); //Radares
+		this.lArmas.add(2,0); //Escudos (en 0 hasta que se implementen)
+		this.lArmas.add(3,5); //Consultas de Radares
+		this.lArmas.add(4,0); //Movimientos de radar
 		this.panel=new Panel();
 		this.lBarcos = new ArrayList[5];
 		for (int i = 1; i<5;i++) {
 			this.lBarcos[i]= new ArrayList<Barco>();			
 		}
+		
+		this.radX = -1;
+		this.radY = -1;
+		this.radTab = -1;
+		
 		this.addObserver(Vista.getVista());
 		this.addObserver(GestorTurno.getGestorTurno());
 	}
@@ -62,7 +71,7 @@ public class Jugador extends Observable{
 	 */
 	public void actuarSobre(Accion a, int x, int y) {
 		this.panel.accionarTile(x, y, a);
-		if(!(a instanceof Seleccion)) { //Se puede usar esto o la linea comentada en actuar de gestor turno
+		if(!(a instanceof Seleccion || a instanceof Radar)) { //Se puede usar esto o la linea comentada en actuar de gestor turno
 			setChanged();
 			notifyObservers(true);
 			this.todosHundidos();
@@ -174,5 +183,13 @@ public class Jugador extends Observable{
 		this.panel.ponerTileEnPos(x, y, tb);
 		tb.revelar();
 	}
+	
+	
+	public int getRadX() {return this.radX;}
+	public int getRadY() {return this.radY;}
+	public int getRadTab() {return this.radTab;}
+	public void setRadX(int x) {this.radX=x;}
+	public void setRadY(int y) {this.radY=y;}
+	public void setRadTab(int tab) {this.radTab=tab;}
 
 }

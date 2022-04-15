@@ -4,11 +4,13 @@ public class TBarco extends Tile {
 
 	private Barco barco;
 	private boolean tocado;
+	private boolean mostrado;
 
 	public TBarco(int pCoordX, int pCoordY, boolean pOc) {
 		// TODO - implement TBarco.TBarco
 		super(pCoordX,pCoordY,pOc);
 		this.tocado = false;
+		this.mostrado = false;
 //		System.out.println(this.coordX+"  "+this.coordY);
 	}
 
@@ -44,8 +46,13 @@ public class TBarco extends Tile {
 	}
 
 	public void mostrar() {
+		this.mostrado = true;
 		setChanged();
 		notifyObservers(3);
+	}
+	
+	public boolean getMostrado() {
+		return this.mostrado&&(!this.tocado);
 	}
 
 }

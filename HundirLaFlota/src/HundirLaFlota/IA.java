@@ -6,6 +6,8 @@ public class IA extends Jugador {
 
 	private boolean [][] probados;
 	
+	private int CUENTAPRUEBA;
+
 	public IA() {
 		this.probados = new boolean[10][10];
 		for (int i = 0; i < 10;i++) {
@@ -13,6 +15,7 @@ public class IA extends Jugador {
 				probados[i][j]=false;
 			}
 		}
+		this.CUENTAPRUEBA = 0;
 	}
 
 	public void ponerBarcosInteligente() {
@@ -113,43 +116,66 @@ public class IA extends Jugador {
 	
 
 	public void realizarAccionInteligente() {
-		int accion = (int) (Math.random()*2);
-		if(this.lArmas.get(accion)>0) this.lArmas.add(accion,this.lArmas.get(accion)-1);
+		
+		int accion = (int) (Math.random()*5); //Quinta accion cambiar posicion/poner radar
+		int x;
+		int y;
+		if(this.lArmas.get(accion)>0) {
+			if(accion!=4) this.lArmas.add(accion,this.lArmas.get(accion)-1); //Se resta a menos que sea cambiar pa posicion del radar 
+		}
 		else {
 			accion = 0;
 			this.lArmas.add(accion,this.lArmas.get(accion)-1);
 		}
-//		if(accion==1 && this.cantMisil<1)accion=0;
-//		if(accion==0 && this.cantBomb<1)accion=1;
-//		Modelo.getModelo().cargarAccion(accion);
-		Actuador.getActuador().almacenarAccion(accion);
-		int x = (int) (Math.random()*10);
-		int y = (int) (Math.random()*10);
-		Actuador.getActuador().almacenarPos(x, y, 0);
-		int cont = 0;
-		while (this.probados[x][y]==true && cont<=1000) {
+		
+		System.out.println("Codigo accion IA: "+accion);
+		
+//		System.out.println("tttt"+accion);
+		if(accion==2) {
+			//Espacio de entre que se implementa escudo
+		}else if(accion==3) {
+			if(this.radX==-1) {//Comprobación de si se ha generado una radar ya
+				this.ponerRadar();
+			}
+			Actuador.getActuador().obtenerPosRadarAlmacenada(1);
+			Actuador.getActuador().almacenarAccion(accion);
+			
+//			System.out.println("--------ooooooo---------");
+			Actuador.getActuador().actuarContra(0);
+//			this.realizarAccionInteligente();
+		}else if(accion==4){
+			this.ponerRadar();
+//			System.out.println("--------uuuuuuu---------");
+//			this.realizarAccionInteligente();
+		}else {
+			Actuador.getActuador().almacenarAccion(accion);
 			x = (int) (Math.random()*10);
 			y = (int) (Math.random()*10);
-			cont++;
-		}
-		
-		if(this.probados[x][y]==true) { //Para que nunca repita posiciones aunque tras las iteraciones de forma aleatoria se encuentre con una que ya ha usado
-			cont = 0;
-			while(this.probados[x][y]==true&&cont<=100) {
+			Actuador.getActuador().almacenarPos(x, y, 0);
+			int cont = 0;
+			while (this.probados[x][y]==true && cont<=1000) {
+				x = (int) (Math.random()*10);
+				y = (int) (Math.random()*10);
 				cont++;
-				x++;
-				if(x>9) {
-					y++;
-					x=0;
+			}
+			
+			if(this.probados[x][y]==true) { //Para que nunca repita posiciones aunque tras las iteraciones de forma aleatoria se encuentre con una que ya ha usado
+				cont = 0;
+				while(this.probados[x][y]==true&&cont<=100) {
+					cont++;
+					x++;
+					if(x>9) {
+						y++;
+						x=0;
+						}
+					if(y>9) {
+						y=0;
 					}
-				if(y>9) {
-					y=0;
 				}
 			}
+			probados[x][y]=true;
+			Actuador.getActuador().actuarContra(0);
 		}
-//		Modelo.getModelo().recibirPos(x, y, 'I');
-		Actuador.getActuador().actuarContra(0);
-		probados[x][y]=true;
 	}
 	
 	@Override
@@ -167,10 +193,15 @@ public class IA extends Jugador {
 	}
 	
 	
-	@Override //METODO PARA QUE NO SE MUESTREN LOS BARCOS PUESTOS POR LA IA
-	protected void ponerTBPanel(int x, int y, TBarco tb) {
-		this.panel.ponerTileEnPos(x, y, tb);
-		tb.revelar();
-	}
+//	@Override //METODO PARA QUE NO SE MUESTREN LOS BARCOS PUESTOS POR LA IA
+//	protected void ponerTBPanel(int x, int y, TBarco tb) {
+//		this.panel.ponerTileEnPos(x, y, tb);
+//	}
 
+	private void ponerRadar() {
+		GestorTurno.getGestorTurno().ponerRadarEnTablero(0);
+		Actuador.getActuador().almacenarAccion(-1);
+		Actuador.getActuador().obtenerPosRadarAlmacenada(1);
+		Actuador.getActuador().actuarContra(0);
+	}
 }

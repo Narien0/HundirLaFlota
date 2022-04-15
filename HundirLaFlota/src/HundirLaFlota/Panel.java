@@ -90,11 +90,13 @@ public class Panel {
 			usarRadar(x,y);
 		}
 		else{
+//			System.out.print("    Posicion Accion en panel "+x+" "+y);
 			this.lTiles[x][y].ejecutar(a);
 		}
 	}
 	
 	private void usarRadar(int x, int y) {
+		boolean encPrimero = false;
 		int radio = 1;
 		int indx;
 		int indy;
@@ -109,13 +111,16 @@ public class Panel {
 		indx=xinic;
 		indy=yinic;
 //		System.out.println("X:"+x+"   Y:"+y + "     -- Radio:"+radio + "   Inic "+xinic+","+yinic+"   Fin "+xfin+","+yfin);
-		while(indx<=xfin) {
+		while(indx<=xfin && !encPrimero) {
 			if(indx>=0&&indx<10) {
-				while(indy<=yfin) {
+				while(indy<=yfin && !encPrimero) {
 					if(indy>=0 && indy<10) {
 //						System.out.println(indx+ "  "+ indy);
 						if(this.lTiles[indx][indy] instanceof TBarco) {
-							((TBarco)this.lTiles[indx][indy]).mostrar();
+							if(!((TBarco) this.lTiles[indx][indy]).getMostrado()) {
+								encPrimero = true;
+								((TBarco)this.lTiles[indx][indy]).mostrar();
+							}
 						}
 					}
 					indy++;

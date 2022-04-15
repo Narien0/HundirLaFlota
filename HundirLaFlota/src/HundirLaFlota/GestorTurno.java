@@ -34,14 +34,22 @@ public class GestorTurno extends Observable implements Observer{
 	}
 	
 	public void actuar(){
-		boolean accionExitosa = false;
+		int turnoPreAccion = this.turno;
+		
 		if(estado==0) {
-			Actuador.getActuador().seleccionarPos(turno);
+			if(!this.esTurnoIA()) {
+				Actuador.getActuador().seleccionarPos(turno);
+			}
 			Actuador.getActuador().ponerBarco(turno);
 		}
-		else if(estado==1) accionExitosa = Actuador.getActuador().actuar(turno);
+		else if(estado==1) Actuador.getActuador().actuar(turno);
 		
 //		if(accionExitosa)this.cambioTurno();
+		if(this.esTurnoIA()&&turnoPreAccion==turno) {
+			this.actuar();
+		}else {
+			if(turnoPreAccion==1)System.out.println();//Solo para organizar por consola
+		}
 	}
 	
 	public void cambioTurno(){
@@ -77,6 +85,9 @@ public class GestorTurno extends Observable implements Observer{
 		return this.turnosIAs.get(turno);
 	}
 
+	public void ponerRadarEnTablero(int pObjetivo) {
+		Actuador.getActuador().generarPosRadar(turno, pObjetivo);	
+	}
 	
 	
 	@Override
