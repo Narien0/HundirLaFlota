@@ -126,9 +126,7 @@ public class IA extends Jugador {
 			this.lArmas.add(accion,this.lArmas.get(accion)-1);
 		}
 		
-		System.out.println("Codigo accion IA: "+accion);
-		
-//		System.out.println("tttt"+accion);
+//		System.out.println("Codigo accion IA: "+accion);
 		if(accion==2) {
 			//Espacio de entre que se implementa escudo
 		}else if(accion==3) {
@@ -137,14 +135,9 @@ public class IA extends Jugador {
 			}
 			Actuador.getActuador().obtenerPosRadarAlmacenada(1);
 			Actuador.getActuador().almacenarAccion(accion);
-			
-//			System.out.println("--------ooooooo---------");
 			Actuador.getActuador().actuarContra(0);
-//			this.realizarAccionInteligente();
 		}else if(accion==4){
 			this.ponerRadar();
-//			System.out.println("--------uuuuuuu---------");
-//			this.realizarAccionInteligente();
 		}else {
 			Actuador.getActuador().almacenarAccion(accion);
 			x = (int) (Math.random()*10);

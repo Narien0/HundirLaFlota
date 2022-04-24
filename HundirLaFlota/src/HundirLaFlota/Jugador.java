@@ -33,10 +33,6 @@ public class Jugador extends Observable{
 		}
 		
 		this.radar = null;
-//		this.radX = -1;
-//		this.radY = -1;
-//		this.radTab = -1;
-		
 		this.addObserver(Vista.getVista());
 		this.addObserver(GestorTurno.getGestorTurno());
 	}
@@ -48,6 +44,7 @@ public class Jugador extends Observable{
 	public boolean consumirRecuro(Accion a) {
 		boolean sePuede = false;
 		int pos = -1;
+		int cantidad;
 		if (a instanceof Bomba) {
 			pos = 0;
 		}else if (a instanceof Misil) {
@@ -59,8 +56,10 @@ public class Jugador extends Observable{
 			sePuede = true;
 		}
 		if(!sePuede) {
-			sePuede = (this.lArmas.get(pos)>0);
-			this.lArmas.add(pos,this.lArmas.get(pos)-1);
+			cantidad = this.lArmas.get(pos);
+			sePuede = (cantidad>0);
+			this.lArmas.set(pos,cantidad -1);
+//			System.out.println("Acciones Jugador: quedan "+this.lArmas.get(pos)+" de "+ pos);
 		}
 		return sePuede;
 	}

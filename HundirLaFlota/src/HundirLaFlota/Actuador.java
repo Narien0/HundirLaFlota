@@ -130,17 +130,12 @@ public class Actuador extends Observable{
 	
 	public boolean actuar(int posJug){
 		boolean res = false;
-//		if(this.accionAlmacenada instanceof Radar && !this.posDeRadarCargada) this.obtenerPosRadarAlmacenada(posJug);
-//		else if(!(this.accionAlmacenada instanceof Radar) && this.posDeRadarCargada) this.resetAlmacenado();
 		if(this.accionAlmacenada instanceof ConsultaRadar) {
-//			System.out.println(". O .");
 			this.obtenerPosRadarAlmacenada(posJug);
 		}
 		int posObj = this.posTablero;
-//		System.out.println("\n actuar "+posJug+"   objetivo: "+posObj);
 		if(this.accionSobreSiMismo()) posObj = posJug;
 		res = this.almacenNecesarioAccion() && 0 < posObj && posObj < this.lJugadores.size();
-//		System.out.println(res);
 		Jugador jaux = this.lJugadores.get(posJug);
 		if(jaux instanceof IA) {
 			res = true;
@@ -152,11 +147,9 @@ public class Actuador extends Observable{
 			}
 		}
 		
-		Accion aux = this.accionAlmacenada; //Probando cosas
-		
-//		if(res) {
-//			this.resetAlmacenado();
-//		}
+		if(res) {
+			this.resetAlmacenado();
+		}
 		
 		return res;
 	}
