@@ -62,12 +62,9 @@ public class GestorTurno extends Observable implements Observer{
 			this.actuar();
 		}
 		
-//		System.out.println("\n###Cambio de turno\n\n");
-		
 	}
 	
 	public void cambioEstado(){
-//		System.out.println("\n###Cambio de estado\n");
 		this.estado++;
 		setChanged();
 		notifyObservers(this.estado);

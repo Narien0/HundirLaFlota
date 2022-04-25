@@ -48,38 +48,29 @@ public class Controlador implements ActionListener, MouseListener {
 		else if(((JButton) e.getSource()).getText().equals("Portaviones")) {
 			Actuador.getActuador().almacenarTamBarco(4);
 			GestorTurno.getGestorTurno().actuar();
-			//Modelo.getModelo().recibirTamano(4);
 		}else if(((JButton) e.getSource()).getText().equals("Submarino")) {
 			Actuador.getActuador().almacenarTamBarco(3);
 			GestorTurno.getGestorTurno().actuar();
-			//Modelo.getModelo().recibirTamano(3);
 		}else if(((JButton) e.getSource()).getText().equals("Destructor")) {
 			Actuador.getActuador().almacenarTamBarco(2);
 			GestorTurno.getGestorTurno().actuar();
-			//Modelo.getModelo().recibirTamano(2);
 		}else if(((JButton) e.getSource()).getText().equals("Fragata")) {
 			Actuador.getActuador().almacenarTamBarco(1);
 			GestorTurno.getGestorTurno().actuar();
-			//Modelo.getModelo().recibirTamano(1);
 		}else if(((JButton) e.getSource()).getText().equals("Arriba")) {
 			Actuador.getActuador().almacenarDireccion(0);
 			GestorTurno.getGestorTurno().actuar();
-			//Modelo.getModelo().recibirDir(0);
 		}else if(((JButton) e.getSource()).getText().equals("Abajo")) {
 			Actuador.getActuador().almacenarDireccion(2);
 			GestorTurno.getGestorTurno().actuar();
-			//Modelo.getModelo().recibirDir(2);
 		}else if(((JButton) e.getSource()).getText().equals("Derecha")) {
 			Actuador.getActuador().almacenarDireccion(1);
 			GestorTurno.getGestorTurno().actuar();
-			//Modelo.getModelo().recibirDir(1);
 		}else if(((JButton) e.getSource()).getText().equals("Izquierda")) {
 			Actuador.getActuador().almacenarDireccion(3);
 			GestorTurno.getGestorTurno().actuar();
-			//Modelo.getModelo().recibirDir(3);
 		}else if(((JButton) e.getSource()).getText().equals("Limpiar Tablero")) {
 			GestorTurno.getGestorTurno().limpiarTableroTurno();
-			//Modelo.getModelo().limpiarTableroUsuario();
 		}
 	}
 

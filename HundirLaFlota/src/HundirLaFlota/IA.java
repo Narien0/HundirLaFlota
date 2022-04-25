@@ -126,7 +126,6 @@ public class IA extends Jugador {
 			this.lArmas.set(accion,this.lArmas.get(accion)-1);
 		}
 		
-//		System.out.println("Codigo accion IA: "+accion);
 		if(accion==2) {//Usar escudo
 			Actuador.getActuador().almacenarAccion(accion);
 			x = (int) (Math.random()*10);
