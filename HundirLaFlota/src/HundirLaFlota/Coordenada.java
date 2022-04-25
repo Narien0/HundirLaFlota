@@ -1,11 +1,11 @@
 package HundirLaFlota;
 
-public class Radar{
+public class Coordenada{
 	private int posX;
 	private int posY;
 	private int posTab;
 	
-	public Radar(int x, int y, int tab) {
+	public Coordenada(int x, int y, int tab) {
 		this.posX = x;
 		this.posY = y;
 		this.posTab = tab;

@@ -23,7 +23,7 @@ public class Actuador extends Observable{
 		this.lJugadores.add(0,new Jugador());
 		this.lJugadores.add(1,new IA());
 		
-		this.resetAlmacenado();
+		this.resetAlmacenadoDePoner();
 		
 		addObserver(Vista.getVista());
 	}
@@ -43,6 +43,9 @@ public class Actuador extends Observable{
 		}else if(pCodAcc==1) {
 			this.accionAlmacenada = new Misil();
 			notificacion = "Misil";
+		}else if(pCodAcc==2) {
+			this.accionAlmacenada = new Escudo();
+			notificacion = "Escudo";
 		}else if(pCodAcc==3) {
 			this.accionAlmacenada = new ConsultaRadar();
 			notificacion = "Radar";
@@ -73,14 +76,11 @@ public class Actuador extends Observable{
 		this.posXAlmacenada = x;
 		this.posYAlmacenada = y;
 		this.posTablero = tab;
-//		this.posDeRadarCargada = false;
 	}
 	
 	public void seleccionarPos(int posJug) {
 		Jugador jaux = this.lJugadores.get(posJug);
-//		System.out.println("Preselec  "+this.posXAlmacenada+"    "+this.posYAlmacenada);
 		if(/*!(jaux instanceof IA) &&*/ this.posXAlmacenada >= 0 && this.posYAlmacenada >= 0) {
-//			System.out.println("Postselec");
 			jaux.actuarSobre(new Seleccion(), this.posXAlmacenada, this.posYAlmacenada);
 		}
 	}
@@ -91,11 +91,6 @@ public class Actuador extends Observable{
 		int x = (int)(Math.random()*10);
 		int y = (int)(Math.random()*10);
 		jaux.setRadar(x, y, pObj);
-//		jaux.setRadX(x);
-//		jaux.setRadY(y);
-//		jaux.setRadTab(pObj);
-//		System.out.print(pAct);
-//		System.out.println(" generarPosRadar   "+jaux.getRadX()+"  "+ jaux.getRadY());
 	}
 	
 	public void obtenerPosRadarAlmacenada(int pAct) {
@@ -103,27 +98,28 @@ public class Actuador extends Observable{
 //		if(jaux.getRadX()==-1) {
 //			this.generarPosRadar(posJ);
 //		}
-		this.posXAlmacenada = jaux.getRadX();
-		this.posYAlmacenada = jaux.getRadY();
-		this.posTablero = jaux.getRadTab();
-		
-//		System.out.print(pAct);
-//		System.out.println(" obtenerPosRadarAlmacenado    "+jaux.getRadX()+"    "+jaux.getRadY()+"        "+jaux.getRadTab());
+		Coordenada rAux = jaux.getRadar();
+		this.posXAlmacenada = rAux.getX();
+		this.posYAlmacenada = rAux.getY();
+		this.posTablero = rAux.getTab();
 	}
 	
 	public void ponerBarco(int posJug){
 		boolean puestoCorrectamente = false;
-//		System.out.println("iiiiiEEE    "+this.posXAlmacenada + "     "+this.posYAlmacenada+ "   "+ posJug);
 		if (this.almacenNecesarioPoner()){
 			Jugador jaux = this.lJugadores.get(posJug);
 			if(jaux instanceof IA) {
 				((IA) jaux).ponerBarcosInteligente();
+				this.resetAlmacenadoDeActuar();
 			}
-			else puestoCorrectamente = jaux.ponerBarco(this.posXAlmacenada, this.posYAlmacenada, this.tamanoAlmacenado, this.direccionAlmacenada);
-			if (puestoCorrectamente)
-				this.resetAlmacenado();
+			else {
+				puestoCorrectamente = 1 == jaux.ponerBarco(this.posXAlmacenada, this.posYAlmacenada, this.tamanoAlmacenado, this.direccionAlmacenada);
+			}
+			if (puestoCorrectamente) {
+				this.resetAlmacenadoDePoner();
 				setChanged();
 				notifyObservers("");
+			}
 		}
 		
 	}
@@ -135,7 +131,7 @@ public class Actuador extends Observable{
 		}
 		int posObj = this.posTablero;
 		if(this.accionSobreSiMismo()) posObj = posJug;
-		res = this.almacenNecesarioAccion() && 0 < posObj && posObj < this.lJugadores.size();
+		res = this.almacenNecesarioAccion() && 0 <= posObj && posObj <= this.lJugadores.size();
 		Jugador jaux = this.lJugadores.get(posJug);
 		if(jaux instanceof IA) {
 			res = true;
@@ -148,7 +144,7 @@ public class Actuador extends Observable{
 		}
 		
 		if(res) {
-			this.resetAlmacenado();
+			this.resetAlmacenadoDeActuar();
 		}
 		
 		return res;
@@ -157,28 +153,28 @@ public class Actuador extends Observable{
 	public void actuarContra(int posOp) {
 		Jugador jOponente = this.lJugadores.get(posOp);
 		jOponente.actuarSobre(this.accionAlmacenada, this.posXAlmacenada, this.posYAlmacenada);
-		this.resetAlmacenado();
 		setChanged();
 		notifyObservers("");
 	}
 	
 	private boolean accionSobreSiMismo() {
-		return(this.accionAlmacenada instanceof Seleccion /*|| this.accionAlmacenada instanceof Escudo*/);
+		return(this.accionAlmacenada instanceof Seleccion || this.accionAlmacenada instanceof Escudo);
 	}
 	
-	public boolean tableroApropiado(int c){
+	public boolean tableroApropiado(int turnoActuando,int estadoAct){
 		boolean res;
-		if((this.accionSobreSiMismo()&& this.posTablero == c)||(!this.accionSobreSiMismo()&&this.posTablero!= c)) {
+		if((this.accionSobreSiMismo()&& this.posTablero == turnoActuando)||(!this.accionSobreSiMismo()&&this.posTablero!= turnoActuando)) {
 			//Caso en el qué si es el tablero apropiado
 			res = true;
 		}else {
-			this.resetAlmacenado();
+			if(estadoAct == 0)this.resetAlmacenadoDePoner();
+			else this.resetAlmacenadoDeActuar();
 			res = false;
 		}
 		return res;
 	}
 	
-	private void resetAlmacenado(){
+	private void resetAlmacenadoDePoner(){
 		this.accionAlmacenada=new Seleccion();
 		this.direccionAlmacenada=-1;
 		this.tamanoAlmacenado=-1;
@@ -186,6 +182,11 @@ public class Actuador extends Observable{
 		this.posYAlmacenada=-1;
 		this.posTablero = -1;
 		this.posDeRadarCargada = false;
+	}
+	
+	private void resetAlmacenadoDeActuar() {
+		this.resetAlmacenadoDePoner();
+		this.accionAlmacenada = null;
 	}
 	
 	private boolean almacenNecesarioAccion(){
@@ -206,9 +207,10 @@ public class Actuador extends Observable{
 		return res;
 	}
 	
-	public void resetCoords() {
+	public void resetCoordsAcc() {
 		this.posXAlmacenada=-1;
 		this.posYAlmacenada=-1;
+		this.accionAlmacenada = null;
 	}
 	
 	public void limpiarTableroUsuario(int turn) {

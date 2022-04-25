@@ -72,9 +72,6 @@ public class Panel {
 	 */
 	public void ponerTileEnPos(int x, int y, TBarco tB) {
 		// TODO - implement Panel.ponerTileEnPos
-//		Tile t = buscarTileIndice(x,y);
-//		t = tB;
-//		t.revelar();
 		this.lTiles[x][y]=tB;
 	}
 
@@ -90,7 +87,6 @@ public class Panel {
 			usarRadar(x,y);
 		}
 		else{
-//			System.out.print("    Posicion Accion en panel "+x+" "+y);
 			this.lTiles[x][y].ejecutar(a);
 		}
 	}
@@ -110,12 +106,10 @@ public class Panel {
 		yfin=y+radio;
 		indx=xinic;
 		indy=yinic;
-//		System.out.println("X:"+x+"   Y:"+y + "     -- Radio:"+radio + "   Inic "+xinic+","+yinic+"   Fin "+xfin+","+yfin);
 		while(indx<=xfin && !encPrimero) {
 			if(indx>=0&&indx<10) {
 				while(indy<=yfin && !encPrimero) {
 					if(indy>=0 && indy<10) {
-//						System.out.println(indx+ "  "+ indy);
 						if(this.lTiles[indx][indy] instanceof TBarco) {
 							if(!((TBarco) this.lTiles[indx][indy]).getMostrado()) {
 								encPrimero = true;
@@ -132,7 +126,6 @@ public class Panel {
 	}
 	
 	public void llenarAgua(){
-//		Arrays.stream(lTiles).flatMap(Arrays::stream).forEach(v -> v = new Agua(v.getCoordX(),v.getCoordY(),true));
 //		Tal cual estaba no funcionaba asi que lo haré con iterador y lo podemos revisar para java8 luego
 		for(int i=0;i<10;i++) {
 			for(int j=0;j<10;j++) {
@@ -189,5 +182,13 @@ public class Panel {
 			}
 			indx++;
 		}
+	}
+	
+	public boolean esPosDeBarco(int x, int y) {
+		boolean res = this.lTiles[x][y] instanceof TBarco;
+		if (this.lTiles[x][y] instanceof TBarco) {
+			res = this.lTiles[x][y] instanceof TBarco && !((TBarco)this.lTiles[x][y]).estaProtegido();
+		}
+		return (res);
 	}
 }

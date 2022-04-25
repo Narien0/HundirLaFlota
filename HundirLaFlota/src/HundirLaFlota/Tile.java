@@ -8,7 +8,7 @@ public class Tile extends Observable{
 
 	protected int coordX;
 	protected int coordY;
-	private boolean oculto;
+	protected boolean oculto;
 
 	public Tile(int pCoordX, int pCoordY, boolean pOc) {
 		// TODO - implement Tile.Tile

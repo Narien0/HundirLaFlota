@@ -30,11 +30,12 @@ public class Controlador implements ActionListener, MouseListener {
 		if(((JButton) e.getSource()).getText().equals("Bomba")) {
 			Actuador.getActuador().almacenarAccion(0);
 			GestorTurno.getGestorTurno().actuar();
-			//Modelo.getModelo().cargarAccion(0);
 		}else if(((JButton) e.getSource()).getText().equals("Misil")) {
 			Actuador.getActuador().almacenarAccion(1);
 			GestorTurno.getGestorTurno().actuar();
-			//Modelo.getModelo().cargarAccion(1);
+		}else if(((JButton) e.getSource()).getText().equals("Escudo")) {
+			Actuador.getActuador().almacenarAccion(2);
+			GestorTurno.getGestorTurno().actuar();
 		}else if(((JButton) e.getSource()).getText().equals("Radar")) {
 			Actuador.getActuador().almacenarAccion(3);
 			GestorTurno.getGestorTurno().actuar();
@@ -42,7 +43,7 @@ public class Controlador implements ActionListener, MouseListener {
 			GestorTurno.getGestorTurno().ponerRadarEnTablero(1);
 			Actuador.getActuador().obtenerPosRadarAlmacenada(0);
 			Actuador.getActuador().seleccionarPos(1);
-			Actuador.getActuador().resetCoords();
+			Actuador.getActuador().resetCoordsAcc();
 		}
 		else if(((JButton) e.getSource()).getText().equals("Portaviones")) {
 			Actuador.getActuador().almacenarTamBarco(4);
@@ -93,8 +94,6 @@ public class Controlador implements ActionListener, MouseListener {
 		Actuador.getActuador().almacenarPos(x, y, tab);
 		GestorTurno.getGestorTurno().tableroApropiado(tab);
 		GestorTurno.getGestorTurno().actuar();
-//		char tab = ((JLabel)e.getSource()).getText().charAt(2);
-//		Modelo.getModelo().recibirPos(x, y,tab);
 	}
 
 	@Override

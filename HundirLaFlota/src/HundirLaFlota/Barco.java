@@ -6,9 +6,9 @@ import java.util.Iterator;
 
 public class Barco {
 
-	private Collection<TBarco> lTBarcos;
+	private ArrayList<TBarco> lTBarcos;
 	private boolean hundido;
-	private boolean protegido;
+	private int protegido;
 
 	/**
 	 * 
@@ -16,12 +16,12 @@ public class Barco {
 	 */
 	public Barco(int pTam) {
 		this.hundido = false;
-		this.protegido = false;
+		this.protegido = 0;
 		this.lTBarcos = new ArrayList<TBarco>();
 	}
 
 	public boolean estaProtegido() {
-		return this.protegido;
+		return this.protegido!=0;
 	}
 
 	public void anadirTBarco(TBarco tB) {
@@ -31,11 +31,6 @@ public class Barco {
 
 	public boolean estaHundido() {
 		return this.hundido;
-	}
-
-	public void setProtegido(boolean b) {
-		// TODO Auto-generated method stub
-		this.protegido = b;
 	}
 	
 	public void tocado() {//Comprueba si el barco se ha undido despues de ser tocado cada vez
@@ -57,5 +52,32 @@ public class Barco {
 			aux.tocar();
 		}
 	}
-
+	
+	public void setProtegido(int x) {
+		// TODO Auto-generated method stub
+		if (x == 1){
+			this.protegido = this.protegido - x;
+			if(this.protegido==0) {
+				this.desmarcarProtegidos();
+			}
+		}
+		else{
+			if(this.protegido==0) {
+				this.marcarProtegidos();
+			}
+			this.protegido = x;
+		}
+	}
+	
+	public void marcarProtegidos() {
+		for(int i=0;i<this.lTBarcos.size();i++) {
+			this.lTBarcos.get(i).marcarProtegido(false);
+		}
+	}
+	
+	public void desmarcarProtegidos() {
+		for(int i=0;i<this.lTBarcos.size();i++) {
+			this.lTBarcos.get(i).desmarcarProtegido();
+		}
+	}
 }

@@ -166,6 +166,10 @@ public class Vista extends JFrame implements Observer {
 		menuAcciones.add(btnPonerRadar);
 		btnPonerRadar.addActionListener(Controlador.getControlador());
 		
+		JButton btnEscudo = new JButton("Escudo");
+		menuAcciones.add(btnEscudo);
+		btnEscudo.addActionListener(Controlador.getControlador());
+		
 		menuPosicionar = new JPanel();
 		pnlBajo.add(menuPosicionar);
 				
@@ -254,7 +258,7 @@ public class Vista extends JFrame implements Observer {
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		if (o instanceof Tile) {						//Llamada desde Tile
-			JLabel aux = this.buscarLabel(((Tile) o).getCoordX(),((Tile) o).getCoordY());
+			JLabel aux = this.buscarLabel(((Tile) o).getCoordX(),((Tile) o).getCoordY(),(int)arg);
 			if((Integer)arg==0) {//Ataque sobre agua
 				if(o instanceof Agua) {
 					if(aux.getBackground().equals(cAgua) && estado ==1) {
@@ -266,32 +270,22 @@ public class Vista extends JFrame implements Observer {
 				else if(o instanceof TBarco)	this.cambiarColorCasilla(aux, this.cBarco);
 			}else if ((Integer)arg==1) {//TBarco tocado
 				this.cambiarColorCasilla(aux, this.cTocado);
-			}else if ((Integer)arg==2) {
+			}else if ((Integer)arg==2||(Integer)arg==12) {
 				this.cambiarColorCasilla(aux, this.cEscudo);
 			}else if ((Integer)arg==3) {
 				if(aux.getBackground().equals(this.cSeleccion)) {
-//					this.cAnteriorASelecTab0 = this.cRadar;
 					this.setColorAnteriorCasilla(this.cRadar);
 				}else {
 					this.cambiarColorCasilla(aux, this.cRadar);
 				}
 			}else if ((Integer)arg==-1) {//Se selecciona una casilla sobre la que colocar
 				JLabel casAnt = this.getCasillaAnterior();
-//				if(this.antSeleccionTab0!=null && this.antSeleccionTab0.getBackground().equals(this.cSeleccion)) {
-//					this.cambiarColorCasilla(this.antSeleccionTab0, this.cAnteriorASelecTab0); 
-//				}
 				if(casAnt!=null && casAnt.getBackground().equals(this.cSeleccion)) {
 					this.revertirColorCasilla(); 
 				}
-				
-				
-//				this.cAnteriorASelecTab0 = aux.getBackground();
 				this.setColorAnteriorCasilla(aux.getBackground());
-				
-//				if(!aux.getBackground().equals(this.cBarco)) {
-					this.cambiarColorCasilla(aux,this.cSeleccion);
-//					this.antSeleccionTab0 = aux;
-					this.setCasillaAnterior(aux);
+				this.cambiarColorCasilla(aux,this.cSeleccion);
+				this.setCasillaAnterior(aux);
 //				}
 			}
 			
@@ -353,9 +347,9 @@ public class Vista extends JFrame implements Observer {
 		}
 	}
 	
-	private JLabel buscarLabel(int x, int y) {
+	private JLabel buscarLabel(int x, int y, int codAcc) {
 		JLabel[][] matriz;
-		if(this.estado==0) {
+		if(this.estado==0||this.codDeAccionSobreSiMismo(codAcc)) {
 			if(this.turnoUsr) matriz = this.gIzq;
 			else matriz = this.gDer;
 		}else /*if (estado==1)*/ {
@@ -404,6 +398,10 @@ public class Vista extends JFrame implements Observer {
 			res = this.antSeleccionTab0;
 		}
 		return res;
+	}
+	
+	private boolean codDeAccionSobreSiMismo(int x) {
+		return (x == 2);
 	}
 	
 //	public void TESTOCUPADO(int x, int y) { //Usado para visualizar el espacio de agua ocupado al poner barcos en testeo

@@ -8,10 +8,10 @@ import java.util.Observable;
 public class Jugador extends Observable{
 
 	private double dinero;
-	protected Collection<Barco>[] lBarcos;
+	protected ArrayList<Barco>[] lBarcos;
 	protected ArrayList<Integer> lArmas;
 	protected Panel panel;
-	protected Radar radar;
+	protected Coordenada radar;
 	
 	//Para radar
 //	protected int radX;
@@ -23,7 +23,7 @@ public class Jugador extends Observable{
 		this.lArmas = new ArrayList<Integer>();
 		this.lArmas.add(0,100); //Bombas
 		this.lArmas.add(1,5); //Misiles
-		this.lArmas.add(2,0); //Escudos (en 0 hasta que se implementen)
+		this.lArmas.add(2,5); //Escudos (en 0 hasta que se implementen)
 		this.lArmas.add(3,5); //Consultas de Radares
 		this.lArmas.add(4,0); //Movimientos de radar
 		this.panel=new Panel();
@@ -49,6 +49,8 @@ public class Jugador extends Observable{
 			pos = 0;
 		}else if (a instanceof Misil) {
 			pos = 1;
+		}else if (a instanceof Escudo) {
+			pos = 2;
 		}else if (a instanceof ConsultaRadar) {
 			pos = 3;
 		}else if (a instanceof Seleccion) {
@@ -59,7 +61,6 @@ public class Jugador extends Observable{
 			cantidad = this.lArmas.get(pos);
 			sePuede = (cantidad>0);
 			this.lArmas.set(pos,cantidad -1);
-//			System.out.println("Acciones Jugador: quedan "+this.lArmas.get(pos)+" de "+ pos);
 		}
 		return sePuede;
 	}
@@ -72,7 +73,7 @@ public class Jugador extends Observable{
 	 */
 	public void actuarSobre(Accion a, int x, int y) {
 		this.panel.accionarTile(x, y, a);
-		if(!(a instanceof Seleccion || a instanceof ConsultaRadar)) { //Se puede usar esto o la linea comentada en actuar de gestor turno
+		if(!(a instanceof Seleccion || a instanceof ConsultaRadar || a instanceof Escudo)) { //Se puede usar esto o la linea comentada en actuar de gestor turno
 			setChanged();
 			notifyObservers(true);
 			this.todosHundidos();
@@ -86,17 +87,17 @@ public class Jugador extends Observable{
 	 * @param pTam
 	 * @param pCodDir
 	 */
-	public boolean ponerBarco(int x, int y, int pTam, int pCodDir) {
-		boolean res;
+	public int ponerBarco(int x, int y, int pTam, int pCodDir) {
+		int res;
 		if (this.lBarcos[pTam].size()<5-pTam && panel.sePuedePoner(x,y,pTam,pCodDir)) { 
-			res = true;
+			res = 1;
 			int i = 0;
 			Barco b = new Barco(pTam);
 			this.anadirBarco(b, pTam);
 			notifyObservers(pTam);
 			if(pCodDir == 0){
 				while (i < pTam){
-					TBarco tb =  new TBarco(x,y-i,false);
+					TBarco tb =  new TBarco(x,y-i,/*false*/true);
 					b.anadirTBarco(tb);
 					this.ponerTBPanel(x,y-i,tb);
 					i++;
@@ -104,7 +105,7 @@ public class Jugador extends Observable{
 			}
 			else if(pCodDir == 1){
 				while (i < pTam){
-					TBarco tb =  new TBarco(x+i,y,false);
+					TBarco tb =  new TBarco(x+i,y,/*false*/true);
 					b.anadirTBarco(tb);
 					this.ponerTBPanel(x+i,y,tb);
 					i++;
@@ -112,7 +113,7 @@ public class Jugador extends Observable{
 			}
 			else if(pCodDir == 2){
 				while (i < pTam){
-					TBarco tb =  new TBarco(x,y+i,false);
+					TBarco tb =  new TBarco(x,y+i,/*false*/true);
 					b.anadirTBarco(tb);
 					this.ponerTBPanel(x,y+i,tb);
 					i++;
@@ -120,18 +121,18 @@ public class Jugador extends Observable{
 			}
 			else{
 				while (i < pTam){
-					TBarco tb =  new TBarco(x-i,y,false);
+					TBarco tb =  new TBarco(x-i,y,/*false*/true);
 					b.anadirTBarco(tb);
 					this.ponerTBPanel(x-i,y,tb);
 					i++;
 				}
 			}
-			this.comprobarFinAnadirBarcos();
+			res = this.comprobarFinAnadirBarcos();
 			this.rodearBarco(x, y, pTam, pCodDir);
 		}
 		
 		else{
-			res = false;
+			res = 0;
 			//hacer una excepcion oh algo para comunicar al jugador, oh hacer el checkeo de manera previa
 		}
 		return res;
@@ -147,15 +148,18 @@ public class Jugador extends Observable{
 		notifyObservers(pTam);
 	}
 	
-	public void comprobarFinAnadirBarcos() { //Comprueba si se ha añadido el máximo de cada tipo de barco y si es así cambia el turno
+	public int comprobarFinAnadirBarcos() { //Comprueba si se ha añadido el máximo de cada tipo de barco y si es así cambia el turno
+		int res = 1;
 		boolean lleno = true;
 		for(int i = 1; i < this.lBarcos.length; i++) {
 			lleno = lleno && (this.lBarcos[i].size() == 5-i);
 		}
 		if(lleno) {
+			res=2;
 			setChanged();
 			notifyObservers(true);
 		}
+		return res;
 	}
 	
 	private void rodearBarco(int x, int y, int pTam, int pCodDir) {//Rodear barco de agua ocupada
@@ -186,18 +190,11 @@ public class Jugador extends Observable{
 	}
 	
 	
-//	public int getRadX() {return this.radX;}
-//	public int getRadY() {return this.radY;}
-//	public int getRadTab() {return this.radTab;}
-//	public void setRadX(int x) {this.radX=x;}
-//	public void setRadY(int y) {this.radY=y;}
-//	public void setRadTab(int tab) {this.radTab=tab;}
 	public void setRadar(int x, int y, int tab) {
-		this.radar = new Radar(x,y,tab);
+		this.radar = new Coordenada(x,y,tab);
 	}
-	public int getRadX() {return this.radar.getX();}
-	public int getRadY() {return this.radar.getY();}
-	public int getRadTab() {return this.radar.getTab();}
-	
+	public Coordenada getRadar() {
+		return this.radar;	
+	}
 
 }

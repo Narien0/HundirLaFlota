@@ -44,11 +44,8 @@ public class GestorTurno extends Observable implements Observer{
 		}
 		else if(estado==1) Actuador.getActuador().actuar(turno);
 		
-//		if(accionExitosa)this.cambioTurno();
 		if(this.esTurnoIA()&&turnoPreAccion==turno) {
 			this.actuar();
-		}else {
-			if(turnoPreAccion==1)System.out.println();//Solo para organizar por consola
 		}
 	}
 	
@@ -65,16 +62,19 @@ public class GestorTurno extends Observable implements Observer{
 			this.actuar();
 		}
 		
+//		System.out.println("\n###Cambio de turno\n\n");
+		
 	}
 	
 	public void cambioEstado(){
+//		System.out.println("\n###Cambio de estado\n");
 		this.estado++;
 		setChanged();
 		notifyObservers(this.estado);
 	}
 	
 	public void tableroApropiado(int c){
-		Actuador.getActuador().tableroApropiado(turno);
+		Actuador.getActuador().tableroApropiado(turno,estado);
 	}
 	
 	public void limpiarTableroTurno() {
