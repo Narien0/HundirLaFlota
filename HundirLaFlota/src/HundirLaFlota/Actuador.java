@@ -167,8 +167,8 @@ public class Actuador extends Observable{
 			//Caso en el qué si es el tablero apropiado
 			res = true;
 		}else {
-			if(estadoAct == 0)this.resetAlmacenadoDePoner();
-			else this.resetAlmacenadoDeActuar();
+//			if(estadoAct == 0)this.resetAlmacenadoDePoner();
+//			else this.resetAlmacenadoDeActuar();
 			res = false;
 		}
 		return res;
