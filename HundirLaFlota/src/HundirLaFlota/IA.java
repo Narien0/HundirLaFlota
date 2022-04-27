@@ -1,11 +1,17 @@
 package HundirLaFlota;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class IA extends Jugador {
 
 	private boolean [][] probados;
-	
+	private Random randomgenerator;
 
 	public IA() {
 		this.probados = new boolean[10][10];
@@ -118,6 +124,7 @@ public class IA extends Jugador {
 		int accion = (int) (Math.random()*5); //Quinta accion cambiar posicion/poner radar
 		int x;
 		int y;
+		randomgenerator = new Random();
 		if(this.lArmas.get(accion)>0) {
 			if(accion!=4) this.lArmas.set(accion,this.lArmas.get(accion)-1); //Se resta a menos que sea cambiar pa posicion del radar 
 		}
@@ -127,18 +134,13 @@ public class IA extends Jugador {
 		}
 		
 		if(accion==2) {//Usar escudo
-			Actuador.getActuador().almacenarAccion(accion);
-			x = (int) (Math.random()*10);
-			y = (int) (Math.random()*10);
-			int cont = 0;
-			while (!this.panel.esPosDeBarco(x, y)&&cont<100) {
-				x = (int) (Math.random()*10);
-				y = (int) (Math.random()*10);
-				cont++;
-			}
-			if(this.panel.esPosDeBarco(x, y)) {
-				Actuador.getActuador().almacenarPos(x, y, 1);
-				Actuador.getActuador().actuarContra(1);
+			List<Barco> delta = Arrays.stream(this.lBarcos)
+						.filter(Objects::nonNull)
+							.flatMap(Collection::stream)
+								.filter(e -> !e.estaHundido() && !e.estaProtegido())
+									.collect(Collectors.toList());
+			if (delta.size() != 0) {
+				delta.get(randomgenerator.nextInt(delta.size())).setProtegido(2);
 			}
 		}else if(accion==3) {
 			if(this.radar==null) {//Comprobación de si se ha generado una radar ya
@@ -198,10 +200,10 @@ public class IA extends Jugador {
 	}
 	
 	
-//	@Override //METODO PARA QUE NO SE MUESTREN LOS BARCOS PUESTOS POR LA IA
-//	protected void ponerTBPanel(int x, int y, TBarco tb) {
-//		this.panel.ponerTileEnPos(x, y, tb);
-//	}
+	@Override //METODO PARA QUE NO SE MUESTREN LOS BARCOS PUESTOS POR LA IA
+	protected void ponerTBPanel(int x, int y, TBarco tb) {
+		this.panel.ponerTileEnPos(x, y, tb);
+	}
 
 	private void ponerRadar() {
 		GestorTurno.getGestorTurno().ponerRadarEnTablero(0);

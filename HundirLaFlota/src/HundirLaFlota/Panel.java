@@ -163,12 +163,4 @@ public class Panel {
 			indx++;
 		}
 	}
-	
-	public boolean esPosDeBarco(int x, int y) {
-		boolean res = this.lTiles[x][y] instanceof TBarco;
-		if (this.lTiles[x][y] instanceof TBarco) {
-			res = this.lTiles[x][y] instanceof TBarco && !((TBarco)this.lTiles[x][y]).estaProtegido();
-		}
-		return (res);
-	}
 }
