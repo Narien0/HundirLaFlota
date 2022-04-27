@@ -93,15 +93,19 @@ public class Actuador extends Observable{
 		jaux.setRadar(x, y, pObj);
 	}
 	
-	public void obtenerPosRadarAlmacenada(int pAct) {
+	public boolean obtenerPosRadarAlmacenada(int pAct) {
 		Jugador jaux = this.lJugadores.get(pAct);
 //		if(jaux.getRadX()==-1) {
 //			this.generarPosRadar(posJ);
 //		}
 		Coordenada rAux = jaux.getRadar();
-		this.posXAlmacenada = rAux.getX();
-		this.posYAlmacenada = rAux.getY();
-		this.posTablero = rAux.getTab();
+		boolean res = rAux != null;
+		if(res) {
+			this.posXAlmacenada = rAux.getX();
+			this.posYAlmacenada = rAux.getY();
+			this.posTablero = rAux.getTab();
+		}
+		return res;
 	}
 	
 	public void ponerBarco(int posJug){
@@ -125,13 +129,13 @@ public class Actuador extends Observable{
 	}
 	
 	public boolean actuar(int posJug){
-		boolean res = false;
+		boolean res = true;
 		if(this.accionAlmacenada instanceof ConsultaRadar) {
-			this.obtenerPosRadarAlmacenada(posJug);
+			res =  this.obtenerPosRadarAlmacenada(posJug);
 		}
 		int posObj = this.posTablero;
 		if(this.accionSobreSiMismo()) posObj = posJug;
-		res = this.almacenNecesarioAccion() && 0 <= posObj && posObj <= this.lJugadores.size();
+		res = res && (this.almacenNecesarioAccion() && 0 <= posObj && posObj <= this.lJugadores.size());
 		Jugador jaux = this.lJugadores.get(posJug);
 		if(jaux instanceof IA) {
 			res = true;

@@ -21,7 +21,7 @@ public class Jugador extends Observable{
 	public Jugador() {
 		this.dinero = 50;
 		this.lArmas = new ArrayList<Integer>();
-		this.lArmas.add(0,100); //Bombas
+		this.lArmas.add(0,1000); //Bombas
 		this.lArmas.add(1,5); //Misiles
 		this.lArmas.add(2,5); //Escudos (en 0 hasta que se implementen)
 		this.lArmas.add(3,5); //Consultas de Radares

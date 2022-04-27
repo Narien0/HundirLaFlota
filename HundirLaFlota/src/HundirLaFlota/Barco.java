@@ -57,15 +57,15 @@ public class Barco {
 		// TODO Auto-generated method stub
 		if (x == 1){
 			this.protegido = this.protegido - x;
-			if(this.protegido==0) {
-				this.desmarcarProtegidos();
-			}
 		}
 		else{
 			if(this.protegido==0) {
 				this.marcarProtegidos();
 			}
 			this.protegido = x;
+		}
+		if(this.protegido==0) {
+			this.desmarcarProtegidos();
 		}
 	}
 	

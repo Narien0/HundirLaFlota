@@ -36,7 +36,7 @@ public class TBarco extends Tile {
 	
 	public void tocarEntero() {
 		if (this.barco.estaProtegido()) {
-			this.barco.setProtegido(1);
+			this.barco.setProtegido(0);
 		}else {
 			this.tocado = true;
 			this.barco.hundir();
