@@ -92,36 +92,16 @@ public class Panel {
 	}
 	
 	private void usarRadar(int x, int y) {
-		boolean encPrimero = false;
-		int radio = 1;
-		int indx;
-		int indy;
-		int xinic;
-		int xfin;
-		int yinic;
-		int yfin;
-		xinic=x-radio; 
-		xfin=x+radio;
-		yinic=y-radio;
-		yfin=y+radio;
-		indx=xinic;
-		indy=yinic;
-		while(indx<=xfin && !encPrimero) {
-			if(indx>=0&&indx<10) {
-				while(indy<=yfin && !encPrimero) {
-					if(indy>=0 && indy<10) {
-						if(this.lTiles[indx][indy] instanceof TBarco) {
-							if(!((TBarco) this.lTiles[indx][indy]).getMostrado()) {
-								encPrimero = true;
-								((TBarco)this.lTiles[indx][indy]).mostrar();
-							}
-						}
-					}
-					indy++;
-				}
-				indy=yinic;
-			}
-			indx++;
+		TBarco z =(TBarco)
+				Arrays.stream(lTiles) // Stream<Tile[]>
+					.flatMap(Arrays::stream)
+						.filter(e -> ((e.coordX <= x + 1 && e.coordX >= x -1) && (e.coordY <= y +1 && e.coordY >= y -1)) && (e instanceof TBarco) && !(((TBarco)e).getMostrado()))
+							//.forEach(e -> System.out.println(e.coordX + " / " + e.coordY));
+				.findFirst()
+				.orElse(null);
+
+		if (z != null){
+			z.mostrar();
 		}
 	}
 	
