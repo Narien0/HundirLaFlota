@@ -17,6 +17,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import javax.swing.JSplitPane;
+import java.awt.event.ActionListener;
 
 public class Vista extends JFrame implements Observer {
 
@@ -174,8 +175,13 @@ public class Vista extends JFrame implements Observer {
 		pnlBajo.add(menuPosicionar);
 				
 				JButton btnLimpiarTablero = new JButton("Limpiar Tablero");
+				btnLimpiarTablero.addActionListener(Controlador.getControlador());
 				menuPosicionar.add(btnLimpiarTablero);
 				btnLimpiarTablero.addActionListener(Controlador.getControlador());
+				
+				JButton btnPonerauto = new JButton("PonerAuto");
+				menuPosicionar.add(btnPonerauto);
+				btnPonerauto.addActionListener(Controlador.getControlador());
 		
 				menuPonerBarcos = new JPanel();
 				menuPosicionar.add(menuPonerBarcos);

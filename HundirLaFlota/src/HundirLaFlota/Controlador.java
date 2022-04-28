@@ -71,6 +71,8 @@ public class Controlador implements ActionListener, MouseListener {
 			GestorTurno.getGestorTurno().actuar();
 		}else if(((JButton) e.getSource()).getText().equals("Limpiar Tablero")) {
 			GestorTurno.getGestorTurno().limpiarTableroTurno();
+		}else if(((JButton) e.getSource()).getText().equals("PonerAuto")) {
+			ponerBarcosAuto.getPonerBarcosAuto().usar();	
 		}
 	}
 
