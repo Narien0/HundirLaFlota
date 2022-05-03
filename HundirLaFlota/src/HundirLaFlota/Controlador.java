@@ -44,6 +44,10 @@ public class Controlador implements ActionListener, MouseListener {
 			Actuador.getActuador().obtenerPosRadarAlmacenada(0);
 			Actuador.getActuador().seleccionarPos(1);
 			Actuador.getActuador().resetCoordsAcc();
+		}else if(((JButton) e.getSource()).getText().equals("Tienda")||((JButton) e.getSource()).getText().equals("Salir Tienda")) {
+			
+		}else if(((JButton) e.getSource()).getText().equals("Reparar")) {
+			
 		}
 		else if(((JButton) e.getSource()).getText().equals("Portaviones")) {
 			Actuador.getActuador().almacenarTamBarco(4);

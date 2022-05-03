@@ -202,6 +202,9 @@ public class Vista extends JFrame implements Observer {
 		
 		JButton btnEscudo = new JButton("Escudo");
 		menuAcciones.add(btnEscudo);
+		
+		JButton btnReparar = new JButton("Reparar");
+		menuAcciones.add(btnReparar);
 		btnEscudo.addActionListener(Controlador.getControlador());
 		
 		menuPosicionar = new JPanel();
