@@ -60,6 +60,7 @@ public class Vista extends JFrame implements Observer {
 	private JPanel panelFin;
 	private JPanel panelInfoBarcos;
 	private JPanel panelRecursos;
+	private JPanel panelPreciosTienda;
 	
 	private JLabel lblBarcosusr;
 	private JLabel lblBarcosia;
@@ -71,8 +72,11 @@ public class Vista extends JFrame implements Observer {
 	private JLabel lblEscudos;
 	private JLabel lblLblconsultasDeRadar;
 	private JLabel lblReparaciones;
+	private JLabel lblDinero;
 	
 	private JLabel lblGana;
+	
+	private JButton btnTienda;
 	
 	//######################Colores
 	private Color cBarco;
@@ -153,10 +157,32 @@ public class Vista extends JFrame implements Observer {
 		contentPane.add(pnlBajo, BorderLayout.SOUTH);
 		pnlBajo.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		panelPreciosTienda = new JPanel();
+		pnlBajo.add(panelPreciosTienda);
+		panelPreciosTienda.setLayout(new GridLayout(2, 3, 0, 0));
+		
+		JLabel lblBomba = new JLabel("Bomba: 50");
+		panelPreciosTienda.add(lblBomba);
+		
+		JLabel lblMisil = new JLabel("Misil: 100");
+		panelPreciosTienda.add(lblMisil);
+		
+		JLabel lblEscudo = new JLabel("Escudo: 300");
+		panelPreciosTienda.add(lblEscudo);
+		
+		JLabel lblRadar = new JLabel("Radar: 300");
+		panelPreciosTienda.add(lblRadar);
+		
+		JLabel lblReparacin = new JLabel("Reparación: 500");
+		panelPreciosTienda.add(lblReparacin);
+		
 		menuAcciones = new JPanel();
 		pnlBajo.add(menuAcciones);
 		menuAcciones.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		menuAcciones.hide();
+		
+		btnTienda = new JButton("Tienda");
+		menuAcciones.add(btnTienda);
 		
 		JButton btnBomba = new JButton("Bomba");
 		menuAcciones.add(btnBomba);
@@ -233,6 +259,29 @@ public class Vista extends JFrame implements Observer {
 				direcciones.add(btnIzquierda);
 				btnIzquierda.addActionListener(Controlador.getControlador());
 		
+		panelRecursos = new JPanel();
+		pnlBajo.add(panelRecursos);
+		panelRecursos.setVisible(false);
+		panelRecursos.setLayout(new GridLayout(0, 3, 0, 0));
+		
+		lblBombas = new JLabel("Bombas: ");
+		panelRecursos.add(lblBombas);
+		
+		lblMisiles = new JLabel("Misiles: ");
+		panelRecursos.add(lblMisiles);
+		
+		lblEscudos = new JLabel("Escudos: ");
+		panelRecursos.add(lblEscudos);
+		
+		lblLblconsultasDeRadar = new JLabel("Consultas de Radar: ");
+		panelRecursos.add(lblLblconsultasDeRadar);
+		
+		lblReparaciones = new JLabel("Reparaciones: ");
+		panelRecursos.add(lblReparaciones);
+		
+		lblDinero = new JLabel("Dinero: ");
+		panelRecursos.add(lblDinero);
+		
 		
 		
 		////###############################################################
@@ -256,26 +305,6 @@ public class Vista extends JFrame implements Observer {
 		
 		this.lblGana = new JLabel("Gana el");
 		panelFin.add(lblGana);
-		
-		panelRecursos = new JPanel();
-		pnlBajo.add(panelRecursos);
-		panelRecursos.setVisible(false);
-		panelRecursos.setLayout(new GridLayout(0, 3, 0, 0));
-		
-		lblBombas = new JLabel("Bombas: ");
-		panelRecursos.add(lblBombas);
-		
-		lblMisiles = new JLabel("Misiles: ");
-		panelRecursos.add(lblMisiles);
-		
-		lblEscudos = new JLabel("Escudos: ");
-		panelRecursos.add(lblEscudos);
-		
-		lblLblconsultasDeRadar = new JLabel("Consultas de Radar: ");
-		panelRecursos.add(lblLblconsultasDeRadar);
-		
-		lblReparaciones = new JLabel("Reparaciones: ");
-		panelRecursos.add(lblReparaciones);
 		
 		
 	}
@@ -358,6 +387,8 @@ public class Vista extends JFrame implements Observer {
 					etiquetaACambiar = this.lblLblconsultasDeRadar;
 				}else if(unidad == 'R') {
 					etiquetaACambiar = this.lblReparaciones;
+				}else if(unidad == 'D') {
+					etiquetaACambiar = this.lblDinero;
 				}
 				
 				if(etiquetaACambiar != null && this.turnoUsr) {
@@ -373,6 +404,7 @@ public class Vista extends JFrame implements Observer {
 					this.menuPosicionar.setVisible(false);
 					this.menuAcciones.setVisible(true);
 					this.panelRecursos.setVisible(true);
+					this.panelInfoBarcos.setVisible(false);
 					this.lblSeleccion.setText("Accion Seleccionada: ");
 				}else if((int)arg==2) {	//Cambio a estado 2 (fin de partida)
 					this.menuAcciones.setVisible(false);
@@ -380,6 +412,8 @@ public class Vista extends JFrame implements Observer {
 					if(this.turnoUsr) this.lblGana.setText(this.lblGana.getText()+" Jugador");
 					else this.lblGana.setText(this.lblGana.getText()+" Ordenador");
 					this.panelFin.setVisible(true);
+				}else {				//Escribir mensaje de fin de partida
+					this.lblGana.setText((String)arg);
 				}
 				this.estado=(int) arg;
 			}
@@ -393,10 +427,18 @@ public class Vista extends JFrame implements Observer {
 					String selec = "Barco Seleccionado: "  + arg; 
 					lblSeleccion.setText(selec);
 				}else if(estado == 1) { //Cambio de Accion seleccionada
-					String selec = "Accion Seleccionada: "+ arg;
-					lblSeleccion.setText(selec);
-				}else {				//Escribir mensaje de fin de partida
-					this.lblGana.setText((String)arg);
+					if(arg.equals("Tienda")) {
+						if(this.btnTienda.getText().equals("Tienda")) {
+							this.btnTienda.setText("Salir Tienda");
+							this.panelPreciosTienda.setVisible(true);
+						}else {
+							this.btnTienda.setText("Tienda");
+							this.panelPreciosTienda.setVisible(false);
+						}
+					}else{
+						String selec = "Accion Seleccionada: "+ arg;
+						lblSeleccion.setText(selec);
+					}
 				}
 			}
 		}

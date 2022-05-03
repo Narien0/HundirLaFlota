@@ -39,6 +39,8 @@ public class Jugador extends Observable{
 		notifyObservers("5E");
 		setChanged();
 		notifyObservers("3C");
+		setChanged();
+		notifyObservers("420000D");
 	}
 
 	/**
@@ -85,9 +87,7 @@ public class Jugador extends Observable{
 	 */
 	public void actuarSobre(Accion a, int x, int y) {
 		this.panel.accionarTile(x, y, a);
-//		System.out.println("Actuar con "+a+" sin saltar turno por "+this);
 		if(!(a instanceof Seleccion || a instanceof ConsultaRadar || a instanceof Escudo)) { //Se puede usar esto o la linea comentada en actuar de gestor turno
-			System.out.println("Accion de cambio de turno\n\n\n");
 			setChanged();
 			notifyObservers(true);
 			this.todosHundidos();
@@ -106,7 +106,7 @@ public class Jugador extends Observable{
 		if (this.lBarcos[pTam].size()<5-pTam && panel.sePuedePoner(x,y,pTam,pCodDir)) { 
 			res = 1;
 			int i = 0;
-			Barco b = new Barco(pTam);
+			Barco b = Astillero.getAstillero().construirBarco(pTam);
 			this.anadirBarco(b, pTam);
 			notifyObservers(pTam);
 			if(pCodDir == 0){

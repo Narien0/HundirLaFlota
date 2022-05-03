@@ -1,6 +1,6 @@
 package HundirLaFlota;
 
-public class Bomba extends Arma {
+public class Bomba implements Accion{
 
 	public Bomba() {
 		// TODO - implement Bomba.Bomba

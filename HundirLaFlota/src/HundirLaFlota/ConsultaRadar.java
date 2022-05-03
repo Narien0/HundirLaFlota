@@ -1,6 +1,6 @@
 package HundirLaFlota;
 
-public class ConsultaRadar extends Accion{
+public class ConsultaRadar implements Accion{
 
 	public ConsultaRadar() {}
 }

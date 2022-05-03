@@ -18,11 +18,7 @@ public class Actuador extends Observable{
 	
 	private boolean posDeRadarCargada;
 	
-	private Actuador(){
-//		this.lJugadores = new ArrayList<Jugador>();
-//		this.lJugadores.add(0,new Jugador());
-//		this.lJugadores.add(1,new IA());
-		
+	private Actuador(){		
 		this.resetAlmacenadoDePoner();
 		
 		addObserver(Vista.getVista());
@@ -79,26 +75,17 @@ public class Actuador extends Observable{
 	}
 	
 	public void seleccionarPos(int posJug) {
-//		Jugador jaux = this.lJugadores.get(posJug);
 		if(/*!(jaux instanceof IA) &&*/ this.posXAlmacenada >= 0 && this.posYAlmacenada >= 0) {
-//			jaux.actuarSobre(new Seleccion(), this.posXAlmacenada, this.posYAlmacenada);
-			System.out.println("##LLamada desde seleccionar ");
 			GestorJugadores.getGestorJugadores().actuarContra(posJug, new Seleccion(), posXAlmacenada, posYAlmacenada);
 		}
 	}
 	
 	public void generarPosRadar(int pAct ,int pObj) {
-//		Jugador jaux = this.lJugadores.get(pAct);
-//		int x = (int)(Math.random()*10);
-//		int y = (int)(Math.random()*10);
-//		jaux.setRadar(x, y, pObj);
 		GestorJugadores.getGestorJugadores().generarPosRadar(pAct, pObj);
 	}
 	
 	public boolean obtenerPosRadarAlmacenada(int pAct) {
-//		Jugador jaux = this.lJugadores.get(pAct);
 		Coordenada rAux = GestorJugadores.getGestorJugadores().getPorRadarDe(pAct);
-//		Coordenada rAux = jaux.getRadar();
 		boolean res = rAux != null;
 		if(res) {
 			this.posXAlmacenada = rAux.getX();
@@ -114,17 +101,6 @@ public class Actuador extends Observable{
 		
 		if (this.almacenNecesarioPoner()){
 			puestoCorrectamente = GestorJugadores.getGestorJugadores().ponerBarcoEn(posJug, posXAlmacenada, posYAlmacenada, tamanoAlmacenado, direccionAlmacenada);
-
-//			Jugador jaux = this.lJugadores.get(posJug);
-//			if(jaux instanceof IA) {
-//				((IA) jaux).ponerBarcosInteligente();
-//				this.resetAlmacenadoDeActuar();
-//				codPoner = 2;
-//			}
-//			else {
-//				codPoner = jaux.ponerBarco(this.posXAlmacenada, this.posYAlmacenada, this.tamanoAlmacenado, this.direccionAlmacenada);
-//				puestoCorrectamente = (1 == codPoner || 2 == codPoner);
-//			}
 			if (puestoCorrectamente) {
 				this.resetAlmacenadoDePoner();
 				setChanged();
@@ -146,20 +122,8 @@ public class Actuador extends Observable{
 		int posObj = this.posTablero;
 		if(this.accionSobreSiMismo()) posObj = posJug;
 		recursosNecesarios = recursosNecesarios && (this.almacenNecesarioAccion() && 0 <= posObj);
-		
-//		Jugador jaux = this.lJugadores.get(posJug);
-//		if(jaux instanceof IA) {
-//			recursosNecesarios = true;
-//			((IA) jaux).realizarAccionInteligente();
-//		}
-//		else 
 		if(recursosNecesarios || GestorJugadores.getGestorJugadores().esTurnoIA(posJug)) {
-			System.out.println("##LLamada desde actuar "+this.accionAlmacenada);
 			accionRealizadaCorrectamente = GestorJugadores.getGestorJugadores().actuarUnoContraOtro(posJug, posObj, accionAlmacenada, posXAlmacenada, posYAlmacenada);
-//			recursosNecesarios = recursosNecesarios && jaux.consumirRecuro(accionAlmacenada);
-//			if(recursosNecesarios){
-//				this.actuarContra(posObj);
-//			}
 		}
 		
 		if(recursosNecesarios) {
@@ -171,10 +135,6 @@ public class Actuador extends Observable{
 	
 	public void actuarContra(int posOp) {
 		GestorJugadores.getGestorJugadores().actuarContra(posOp, accionAlmacenada, posXAlmacenada, posYAlmacenada);
-//		Jugador jOponente = this.lJugadores.get(posOp);
-//		jOponente.actuarSobre(this.accionAlmacenada, this.posXAlmacenada, this.posYAlmacenada);
-//		setChanged();
-//		notifyObservers("");
 	}
 	
 	private boolean accionSobreSiMismo() {
@@ -187,8 +147,6 @@ public class Actuador extends Observable{
 			//Caso en el qué si es el tablero apropiado
 			res = true;
 		}else {
-//			if(estadoAct == 0)this.resetAlmacenadoDePoner();
-//			else this.resetAlmacenadoDeActuar();
 			res = false;
 		}
 		return res;
@@ -232,9 +190,5 @@ public class Actuador extends Observable{
 		this.posYAlmacenada=-1;
 		this.accionAlmacenada = null;
 	}
-	
-//	public void limpiarTableroUsuario(int turn) {
-//		this.lJugadores.add(turn,new Jugador());
-//	}
 
 }

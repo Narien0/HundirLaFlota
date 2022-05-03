@@ -1,6 +1,6 @@
 package HundirLaFlota;
 
-public class Escudo extends Accion {
+public class Escudo implements Accion {
 
     public Escudo(){
 

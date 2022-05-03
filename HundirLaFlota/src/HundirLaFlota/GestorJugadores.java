@@ -20,8 +20,8 @@ public class GestorJugadores {
 	}
 	
 	public boolean actuarUnoContraOtro(int pJugAct,int pJugObj, Accion pAccion, int posX, int posY) {
-		System.out.print("accion: "+pAccion+"   ");
-		if(pAccion instanceof Seleccion)System.out.println("Actua "+pJugAct+" contra "+pJugObj);
+//		System.out.print("accion: "+pAccion+"   ");
+//		if(pAccion instanceof Seleccion)System.out.println("Actua "+pJugAct+" contra "+pJugObj);
 		boolean accionEjecutadaCorrectamente=false;
 		Jugador jact = this.lJugadores.get(pJugAct);
 		if(jact instanceof IA) {

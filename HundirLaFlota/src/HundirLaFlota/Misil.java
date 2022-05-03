@@ -1,6 +1,6 @@
 package HundirLaFlota;
 
-public class Misil extends Arma {
+public class Misil implements Accion{
 
 	public Misil() {
 		// TODO - implement Misil.Misil

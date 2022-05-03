@@ -48,7 +48,6 @@ public class GestorTurno extends Observable implements Observer{
 		}
 		
 		if(GestorJugadores.getGestorJugadores().esTurnoIA(turno)&&turnoPreAccion==turno) {
-			System.out.println("returno ia");
 			this.actuar();
 		}
 		
@@ -71,7 +70,6 @@ public class GestorTurno extends Observable implements Observer{
 	}
 	
 	public void cambioEstado(){
-		System.out.println("cambio de estado de "+estado+"    turno "+turno);
 		this.estado++;
 		setChanged();
 		notifyObservers(this.estado);
@@ -96,12 +94,9 @@ public class GestorTurno extends Observable implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-//		System.out.println("update "+arg+"   "+o);
 		if (o instanceof Jugador) {
-//			System.out.println("----"+arg);
 			if(arg instanceof Boolean) {
 				if ((Boolean)arg == true) {
-//					System.out.println("++++");
 					this.cambioTurno();
 				}else {
 					this.cambioEstado();

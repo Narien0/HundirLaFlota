@@ -1,6 +1,6 @@
 package HundirLaFlota;
 
-public class Seleccion extends Accion{
+public class Seleccion implements Accion{
 	
 	public Seleccion() {
 		
