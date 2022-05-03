@@ -200,10 +200,10 @@ public class IA extends Jugador {
 	}
 	
 	
-	@Override //METODO PARA QUE NO SE MUESTREN LOS BARCOS PUESTOS POR LA IA
-	protected void ponerTBPanel(int x, int y, TBarco tb) {
-		this.panel.ponerTileEnPos(x, y, tb);
-	}
+//	@Override //METODO PARA QUE NO SE MUESTREN LOS BARCOS PUESTOS POR LA IA
+//	protected void ponerTBPanel(int x, int y, TBarco tb) {
+//		this.panel.ponerTileEnPos(x, y, tb);
+//	}
 
 	private void ponerRadar() {
 		GestorTurno.getGestorTurno().ponerRadarEnTablero(0);

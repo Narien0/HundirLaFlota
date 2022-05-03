@@ -108,7 +108,7 @@ public class Vista extends JFrame implements Observer {
 		
 		/// Creacion general
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1200, 780);
+		setBounds(100, 100, 1300, 780);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -412,6 +412,8 @@ public class Vista extends JFrame implements Observer {
 				}else if((int)arg==2) {	//Cambio a estado 2 (fin de partida)
 					this.menuAcciones.setVisible(false);
 					this.panelInfoBarcos.setVisible(false);
+					this.panelPreciosTienda.setVisible(false);
+					this.panelRecursos.setVisible(false);
 					if(this.turnoUsr) this.lblGana.setText(this.lblGana.getText()+" Jugador");
 					else this.lblGana.setText(this.lblGana.getText()+" Ordenador");
 					this.panelFin.setVisible(true);
