@@ -108,16 +108,19 @@ public class Actuador extends Observable{
 		return res;
 	}
 	
-	public void ponerBarco(int posJug){
+	public int ponerBarco(int posJug){
 		boolean puestoCorrectamente = false;
+		int codPoner = 0;
 		if (this.almacenNecesarioPoner()){
 			Jugador jaux = this.lJugadores.get(posJug);
 			if(jaux instanceof IA) {
 				((IA) jaux).ponerBarcosInteligente();
 				this.resetAlmacenadoDeActuar();
+				codPoner = 2;
 			}
 			else {
-				puestoCorrectamente = 1 == jaux.ponerBarco(this.posXAlmacenada, this.posYAlmacenada, this.tamanoAlmacenado, this.direccionAlmacenada);
+				codPoner = jaux.ponerBarco(this.posXAlmacenada, this.posYAlmacenada, this.tamanoAlmacenado, this.direccionAlmacenada);
+				puestoCorrectamente = (1 == codPoner || 2 == codPoner);
 			}
 			if (puestoCorrectamente) {
 				this.resetAlmacenadoDePoner();
@@ -125,29 +128,33 @@ public class Actuador extends Observable{
 				notifyObservers("");
 			}
 		}
+		return codPoner;
 		
 	}
 	
-	public boolean actuar(int posJug){
-		boolean res = true;
+	public int actuar(int posJug){
+		int res = 0;
+		boolean recursosNecesarios = true;
+		boolean accionNoFinTurno = this.accionSobreSiMismo() || this.accionAlmacenada instanceof ConsultaRadar;
 		if(this.accionAlmacenada instanceof ConsultaRadar) {
-			res =  this.obtenerPosRadarAlmacenada(posJug);
+			recursosNecesarios =  this.obtenerPosRadarAlmacenada(posJug);
 		}
 		int posObj = this.posTablero;
-		if(this.accionSobreSiMismo()) posObj = posJug;
-		res = res && (this.almacenNecesarioAccion() && 0 <= posObj && posObj <= this.lJugadores.size());
+		if(accionNoFinTurno) posObj = posJug;
+		recursosNecesarios = recursosNecesarios && (this.almacenNecesarioAccion() && 0 <= posObj && posObj <= this.lJugadores.size());
 		Jugador jaux = this.lJugadores.get(posJug);
 		if(jaux instanceof IA) {
-			res = true;
+			recursosNecesarios = true;
 			((IA) jaux).realizarAccionInteligente();
 		}
-		else if(res) {
-			if(jaux.consumirRecuro(accionAlmacenada)){
+		else if(recursosNecesarios) {
+			recursosNecesarios = recursosNecesarios && jaux.consumirRecuro(accionAlmacenada);
+			if(recursosNecesarios){
 				this.actuarContra(posObj);
 			}
 		}
 		
-		if(res) {
+		if(recursosNecesarios) {
 			this.resetAlmacenadoDeActuar();
 		}
 		

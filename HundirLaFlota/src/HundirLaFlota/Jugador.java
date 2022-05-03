@@ -21,7 +21,7 @@ public class Jugador extends Observable{
 	public Jugador() {
 		this.dinero = 50;
 		this.lArmas = new ArrayList<Integer>();
-		this.lArmas.add(0,1000); //Bombas
+		this.lArmas.add(0,100); //Bombas
 		this.lArmas.add(1,5); //Misiles
 		this.lArmas.add(2,5); //Escudos (en 0 hasta que se implementen)
 		this.lArmas.add(3,5); //Consultas de Radares
@@ -35,6 +35,15 @@ public class Jugador extends Observable{
 		this.radar = null;
 		this.addObserver(Vista.getVista());
 		this.addObserver(GestorTurno.getGestorTurno());
+		
+		setChanged();
+		notifyObservers("100B");
+		setChanged();
+		notifyObservers("5M");
+		setChanged();
+		notifyObservers("5E");
+		setChanged();
+		notifyObservers("3C");
 	}
 
 	/**
@@ -45,14 +54,19 @@ public class Jugador extends Observable{
 		boolean sePuede = false;
 		int pos = -1;
 		int cantidad;
+		char codNotif='A';
 		if (a instanceof Bomba) {
 			pos = 0;
+			codNotif = 'B';
 		}else if (a instanceof Misil) {
 			pos = 1;
+			codNotif = 'M';
 		}else if (a instanceof Escudo) {
 			pos = 2;
+			codNotif = 'E';
 		}else if (a instanceof ConsultaRadar) {
 			pos = 3;
+			codNotif = 'C';
 		}else if (a instanceof Seleccion) {
 			pos = -1;
 			sePuede = true;
@@ -61,6 +75,9 @@ public class Jugador extends Observable{
 			cantidad = this.lArmas.get(pos);
 			sePuede = (cantidad>0);
 			this.lArmas.set(pos,cantidad -1);
+			
+			setChanged();
+			notifyObservers(this.lArmas.get(pos).toString()+codNotif);
 		}
 		return sePuede;
 	}

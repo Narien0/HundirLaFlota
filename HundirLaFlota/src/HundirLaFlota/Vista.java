@@ -58,12 +58,19 @@ public class Vista extends JFrame implements Observer {
 	private JPanel menuPosicionar;
 	private JPanel menuPonerBarcos;
 	private JPanel panelFin;
-	private JPanel panelInfo;
+	private JPanel panelInfoBarcos;
+	private JPanel panelRecursos;
 	
 	private JLabel lblBarcosusr;
 	private JLabel lblBarcosia;
 	
 	private JLabel lblSeleccion;
+	
+	private JLabel lblBombas;
+	private JLabel lblMisiles;
+	private JLabel lblEscudos;
+	private JLabel lblLblconsultasDeRadar;
+	private JLabel lblReparaciones;
 	
 	private JLabel lblGana;
 	
@@ -97,7 +104,7 @@ public class Vista extends JFrame implements Observer {
 		
 		/// Creacion general
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 850, 550);
+		setBounds(100, 100, 1200, 780);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -229,18 +236,18 @@ public class Vista extends JFrame implements Observer {
 		
 		
 		////###############################################################
-		panelInfo = new JPanel();
-		pnlBajo.add(panelInfo);
-		panelInfo.setLayout(new GridLayout(3, 1, 0, 0));
+		panelInfoBarcos = new JPanel();
+		pnlBajo.add(panelInfoBarcos);
+		panelInfoBarcos.setLayout(new GridLayout(3, 1, 0, 0));
 		
 		lblBarcosusr = new JLabel("BarcosUsr:");
-		panelInfo.add(lblBarcosusr);
+		panelInfoBarcos.add(lblBarcosusr);
 				
 		lblBarcosia = new JLabel("BarcosIA:");
-		panelInfo.add(lblBarcosia);
+		panelInfoBarcos.add(lblBarcosia);
 		
 		lblSeleccion = new JLabel("Barco Seleccionado: ");
-		panelInfo.add(lblSeleccion);
+		panelInfoBarcos.add(lblSeleccion);
 		
 		
 		this.panelFin = new JPanel();
@@ -249,6 +256,26 @@ public class Vista extends JFrame implements Observer {
 		
 		this.lblGana = new JLabel("Gana el");
 		panelFin.add(lblGana);
+		
+		panelRecursos = new JPanel();
+		pnlBajo.add(panelRecursos);
+		panelRecursos.setVisible(false);
+		panelRecursos.setLayout(new GridLayout(0, 3, 0, 0));
+		
+		lblBombas = new JLabel("Bombas: ");
+		panelRecursos.add(lblBombas);
+		
+		lblMisiles = new JLabel("Misiles: ");
+		panelRecursos.add(lblMisiles);
+		
+		lblEscudos = new JLabel("Escudos: ");
+		panelRecursos.add(lblEscudos);
+		
+		lblLblconsultasDeRadar = new JLabel("Consultas de Radar: ");
+		panelRecursos.add(lblLblconsultasDeRadar);
+		
+		lblReparaciones = new JLabel("Reparaciones: ");
+		panelRecursos.add(lblReparaciones);
 		
 		
 	}
@@ -315,6 +342,27 @@ public class Vista extends JFrame implements Observer {
 					union =lblBarcosusr;
 				}
 				union.setText(union.getText() +" "+ aux);
+			}else if (arg instanceof String) {
+				char unidad = ((String)arg).charAt(((String)arg).length()-1);
+				StringBuilder sb = new StringBuilder(((String)arg));
+				sb.deleteCharAt(((String)arg).length()-1);
+				arg = sb.toString();
+				JLabel etiquetaACambiar = null;
+				if(unidad == 'B') {
+					etiquetaACambiar = this.lblBombas;
+				}else if (unidad == 'M') {
+					etiquetaACambiar = this.lblMisiles;
+				}else if(unidad == 'E') {
+					etiquetaACambiar = this.lblEscudos;
+				}else if(unidad == 'C') {
+					etiquetaACambiar = this.lblLblconsultasDeRadar;
+				}else if(unidad == 'R') {
+					etiquetaACambiar = this.lblReparaciones;
+				}
+				
+				if(etiquetaACambiar != null && this.turnoUsr) {
+					this.cambiarNumUnidades(etiquetaACambiar, sb.toString());
+				}
 			}
 			
 			
@@ -324,10 +372,11 @@ public class Vista extends JFrame implements Observer {
 				if((int)arg==1) {		//Cambio a estado 1 (de poner barcos a actuar)
 					this.menuPosicionar.setVisible(false);
 					this.menuAcciones.setVisible(true);
+					this.panelRecursos.setVisible(true);
 					this.lblSeleccion.setText("Accion Seleccionada: ");
 				}else if((int)arg==2) {	//Cambio a estado 2 (fin de partida)
 					this.menuAcciones.setVisible(false);
-					this.panelInfo.setVisible(false);
+					this.panelInfoBarcos.setVisible(false);
 					if(this.turnoUsr) this.lblGana.setText(this.lblGana.getText()+" Jugador");
 					else this.lblGana.setText(this.lblGana.getText()+" Ordenador");
 					this.panelFin.setVisible(true);
@@ -408,6 +457,26 @@ public class Vista extends JFrame implements Observer {
 	
 	private boolean codDeAccionSobreSiMismo(int x) {
 		return (x == 2);
+	}
+	
+	private void cambiarNumUnidades(JLabel jl, String num) {
+		String aux = jl.getText();
+		int posDosPuntos = -1;
+		boolean encontradoDosPuntos = false;
+		while(posDosPuntos<aux.length()-1 && !encontradoDosPuntos) {
+			posDosPuntos++;
+			if(aux.charAt(posDosPuntos) == ':') {
+				encontradoDosPuntos = true;
+			}
+		}
+		posDosPuntos++;
+		int cont = posDosPuntos;
+		StringBuilder sb = new StringBuilder(aux);
+		while(cont<aux.length()) {
+			sb.deleteCharAt(posDosPuntos);
+			cont++;
+		}
+		jl.setText(sb.toString()+num);
 	}
 	
 //	public void TESTOCUPADO(int x, int y) { //Usado para visualizar el espacio de agua ocupado al poner barcos en testeo

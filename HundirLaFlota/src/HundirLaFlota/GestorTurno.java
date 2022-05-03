@@ -35,18 +35,29 @@ public class GestorTurno extends Observable implements Observer{
 	
 	public void actuar(){
 		int turnoPreAccion = this.turno;
+		int codContrTurno = 0;
 		
 		if(estado==0) {
 			if(!this.esTurnoIA()) {
 				Actuador.getActuador().seleccionarPos(turno);
 			}
-			Actuador.getActuador().ponerBarco(turno);
+			codContrTurno = Actuador.getActuador().ponerBarco(turno);
 		}
-		else if(estado==1) Actuador.getActuador().actuar(turno);
+		else if(estado==1) {
+			codContrTurno = Actuador.getActuador().actuar(turno);
+		}
 		
 		if(this.esTurnoIA()&&turnoPreAccion==turno) {
 			this.actuar();
 		}
+		
+//		if(accionExitosa||codPonerBarco==1) {
+//			this.cambioTurno();
+//		}
+//		if(codPonerBarco==2) {
+//			this.cambioTurno();
+//			this.cambioEstado();
+//		}
 	}
 	
 	public void cambioTurno(){
