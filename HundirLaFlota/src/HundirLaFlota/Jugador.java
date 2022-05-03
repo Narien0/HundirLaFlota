@@ -12,11 +12,6 @@ public class Jugador extends Observable{
 	protected ArrayList<Integer> lArmas;
 	protected Panel panel;
 	protected Coordenada radar;
-	
-	//Para radar
-//	protected int radX;
-//	protected int radY;
-//	protected int radTab;
 
 	public Jugador() {
 		this.dinero = 50;
@@ -90,7 +85,9 @@ public class Jugador extends Observable{
 	 */
 	public void actuarSobre(Accion a, int x, int y) {
 		this.panel.accionarTile(x, y, a);
+//		System.out.println("Actuar con "+a+" sin saltar turno por "+this);
 		if(!(a instanceof Seleccion || a instanceof ConsultaRadar || a instanceof Escudo)) { //Se puede usar esto o la linea comentada en actuar de gestor turno
+			System.out.println("Accion de cambio de turno\n\n\n");
 			setChanged();
 			notifyObservers(true);
 			this.todosHundidos();
@@ -195,6 +192,7 @@ public class Jugador extends Observable{
 			}
 		}
 		if (b) {
+			System.out.println(b+"   "+this);
 			setChanged();
 			notifyObservers(false);
 		}

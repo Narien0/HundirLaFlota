@@ -19,9 +19,9 @@ public class Actuador extends Observable{
 	private boolean posDeRadarCargada;
 	
 	private Actuador(){
-		this.lJugadores = new ArrayList<Jugador>();
-		this.lJugadores.add(0,new Jugador());
-		this.lJugadores.add(1,new IA());
+//		this.lJugadores = new ArrayList<Jugador>();
+//		this.lJugadores.add(0,new Jugador());
+//		this.lJugadores.add(1,new IA());
 		
 		this.resetAlmacenadoDePoner();
 		
@@ -79,26 +79,26 @@ public class Actuador extends Observable{
 	}
 	
 	public void seleccionarPos(int posJug) {
-		Jugador jaux = this.lJugadores.get(posJug);
+//		Jugador jaux = this.lJugadores.get(posJug);
 		if(/*!(jaux instanceof IA) &&*/ this.posXAlmacenada >= 0 && this.posYAlmacenada >= 0) {
-			jaux.actuarSobre(new Seleccion(), this.posXAlmacenada, this.posYAlmacenada);
+//			jaux.actuarSobre(new Seleccion(), this.posXAlmacenada, this.posYAlmacenada);
+			System.out.println("##LLamada desde seleccionar ");
+			GestorJugadores.getGestorJugadores().actuarContra(posJug, new Seleccion(), posXAlmacenada, posYAlmacenada);
 		}
 	}
 	
 	public void generarPosRadar(int pAct ,int pObj) {
-		Jugador jaux = this.lJugadores.get(pAct);
-		this.posTablero = pObj;
-		int x = (int)(Math.random()*10);
-		int y = (int)(Math.random()*10);
-		jaux.setRadar(x, y, pObj);
+//		Jugador jaux = this.lJugadores.get(pAct);
+//		int x = (int)(Math.random()*10);
+//		int y = (int)(Math.random()*10);
+//		jaux.setRadar(x, y, pObj);
+		GestorJugadores.getGestorJugadores().generarPosRadar(pAct, pObj);
 	}
 	
 	public boolean obtenerPosRadarAlmacenada(int pAct) {
-		Jugador jaux = this.lJugadores.get(pAct);
-//		if(jaux.getRadX()==-1) {
-//			this.generarPosRadar(posJ);
-//		}
-		Coordenada rAux = jaux.getRadar();
+//		Jugador jaux = this.lJugadores.get(pAct);
+		Coordenada rAux = GestorJugadores.getGestorJugadores().getPorRadarDe(pAct);
+//		Coordenada rAux = jaux.getRadar();
 		boolean res = rAux != null;
 		if(res) {
 			this.posXAlmacenada = rAux.getX();
@@ -111,17 +111,20 @@ public class Actuador extends Observable{
 	public int ponerBarco(int posJug){
 		boolean puestoCorrectamente = false;
 		int codPoner = 0;
+		
 		if (this.almacenNecesarioPoner()){
-			Jugador jaux = this.lJugadores.get(posJug);
-			if(jaux instanceof IA) {
-				((IA) jaux).ponerBarcosInteligente();
-				this.resetAlmacenadoDeActuar();
-				codPoner = 2;
-			}
-			else {
-				codPoner = jaux.ponerBarco(this.posXAlmacenada, this.posYAlmacenada, this.tamanoAlmacenado, this.direccionAlmacenada);
-				puestoCorrectamente = (1 == codPoner || 2 == codPoner);
-			}
+			puestoCorrectamente = GestorJugadores.getGestorJugadores().ponerBarcoEn(posJug, posXAlmacenada, posYAlmacenada, tamanoAlmacenado, direccionAlmacenada);
+
+//			Jugador jaux = this.lJugadores.get(posJug);
+//			if(jaux instanceof IA) {
+//				((IA) jaux).ponerBarcosInteligente();
+//				this.resetAlmacenadoDeActuar();
+//				codPoner = 2;
+//			}
+//			else {
+//				codPoner = jaux.ponerBarco(this.posXAlmacenada, this.posYAlmacenada, this.tamanoAlmacenado, this.direccionAlmacenada);
+//				puestoCorrectamente = (1 == codPoner || 2 == codPoner);
+//			}
 			if (puestoCorrectamente) {
 				this.resetAlmacenadoDePoner();
 				setChanged();
@@ -134,24 +137,29 @@ public class Actuador extends Observable{
 	
 	public int actuar(int posJug){
 		int res = 0;
+		boolean accionRealizadaCorrectamente = false;
 		boolean recursosNecesarios = true;
 		boolean accionNoFinTurno = this.accionSobreSiMismo() || this.accionAlmacenada instanceof ConsultaRadar;
 		if(this.accionAlmacenada instanceof ConsultaRadar) {
 			recursosNecesarios =  this.obtenerPosRadarAlmacenada(posJug);
 		}
 		int posObj = this.posTablero;
-		if(accionNoFinTurno) posObj = posJug;
-		recursosNecesarios = recursosNecesarios && (this.almacenNecesarioAccion() && 0 <= posObj && posObj <= this.lJugadores.size());
-		Jugador jaux = this.lJugadores.get(posJug);
-		if(jaux instanceof IA) {
-			recursosNecesarios = true;
-			((IA) jaux).realizarAccionInteligente();
-		}
-		else if(recursosNecesarios) {
-			recursosNecesarios = recursosNecesarios && jaux.consumirRecuro(accionAlmacenada);
-			if(recursosNecesarios){
-				this.actuarContra(posObj);
-			}
+		if(this.accionSobreSiMismo()) posObj = posJug;
+		recursosNecesarios = recursosNecesarios && (this.almacenNecesarioAccion() && 0 <= posObj);
+		
+//		Jugador jaux = this.lJugadores.get(posJug);
+//		if(jaux instanceof IA) {
+//			recursosNecesarios = true;
+//			((IA) jaux).realizarAccionInteligente();
+//		}
+//		else 
+		if(recursosNecesarios || GestorJugadores.getGestorJugadores().esTurnoIA(posJug)) {
+			System.out.println("##LLamada desde actuar "+this.accionAlmacenada);
+			accionRealizadaCorrectamente = GestorJugadores.getGestorJugadores().actuarUnoContraOtro(posJug, posObj, accionAlmacenada, posXAlmacenada, posYAlmacenada);
+//			recursosNecesarios = recursosNecesarios && jaux.consumirRecuro(accionAlmacenada);
+//			if(recursosNecesarios){
+//				this.actuarContra(posObj);
+//			}
 		}
 		
 		if(recursosNecesarios) {
@@ -162,10 +170,11 @@ public class Actuador extends Observable{
 	}
 	
 	public void actuarContra(int posOp) {
-		Jugador jOponente = this.lJugadores.get(posOp);
-		jOponente.actuarSobre(this.accionAlmacenada, this.posXAlmacenada, this.posYAlmacenada);
-		setChanged();
-		notifyObservers("");
+		GestorJugadores.getGestorJugadores().actuarContra(posOp, accionAlmacenada, posXAlmacenada, posYAlmacenada);
+//		Jugador jOponente = this.lJugadores.get(posOp);
+//		jOponente.actuarSobre(this.accionAlmacenada, this.posXAlmacenada, this.posYAlmacenada);
+//		setChanged();
+//		notifyObservers("");
 	}
 	
 	private boolean accionSobreSiMismo() {
@@ -224,8 +233,8 @@ public class Actuador extends Observable{
 		this.accionAlmacenada = null;
 	}
 	
-	public void limpiarTableroUsuario(int turn) {
-		this.lJugadores.add(turn,new Jugador());
-	}
+//	public void limpiarTableroUsuario(int turn) {
+//		this.lJugadores.add(turn,new Jugador());
+//	}
 
 }

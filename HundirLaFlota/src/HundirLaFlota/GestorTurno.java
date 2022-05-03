@@ -47,17 +47,11 @@ public class GestorTurno extends Observable implements Observer{
 			codContrTurno = Actuador.getActuador().actuar(turno);
 		}
 		
-		if(this.esTurnoIA()&&turnoPreAccion==turno) {
+		if(GestorJugadores.getGestorJugadores().esTurnoIA(turno)&&turnoPreAccion==turno) {
+			System.out.println("returno ia");
 			this.actuar();
 		}
 		
-//		if(accionExitosa||codPonerBarco==1) {
-//			this.cambioTurno();
-//		}
-//		if(codPonerBarco==2) {
-//			this.cambioTurno();
-//			this.cambioEstado();
-//		}
 	}
 	
 	public void cambioTurno(){
@@ -65,17 +59,19 @@ public class GestorTurno extends Observable implements Observer{
 		if(!(turno<numJug)) {
 			turno = 0;
 		}
+//		System.out.println(" Turno cambiado a "+turno);
 		boolean param = (this.turno==0);
 		setChanged();
 		notifyObservers(param);
 		
-		if(this.esTurnoIA()){
+		if(GestorJugadores.getGestorJugadores().esTurnoIA(turno)){
 			this.actuar();
 		}
 		
 	}
 	
 	public void cambioEstado(){
+		System.out.println("cambio de estado de "+estado+"    turno "+turno);
 		this.estado++;
 		setChanged();
 		notifyObservers(this.estado);
@@ -86,7 +82,7 @@ public class GestorTurno extends Observable implements Observer{
 	}
 	
 	public void limpiarTableroTurno() {
-		Actuador.getActuador().limpiarTableroUsuario(turno);
+		GestorJugadores.getGestorJugadores().limpiarTableroUsuario(turno);
 	}
 	
 	private boolean esTurnoIA() {
@@ -100,9 +96,12 @@ public class GestorTurno extends Observable implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
+//		System.out.println("update "+arg+"   "+o);
 		if (o instanceof Jugador) {
+//			System.out.println("----"+arg);
 			if(arg instanceof Boolean) {
 				if ((Boolean)arg == true) {
+//					System.out.println("++++");
 					this.cambioTurno();
 				}else {
 					this.cambioEstado();

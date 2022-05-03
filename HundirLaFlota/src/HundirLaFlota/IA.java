@@ -120,11 +120,11 @@ public class IA extends Jugador {
 	
 
 	public void realizarAccionInteligente() {
-		
 		int accion = (int) (Math.random()*5); //Quinta accion cambiar posicion/poner radar
 		int x;
 		int y;
 		randomgenerator = new Random();
+		System.out.println("Accion inteligente "+ accion);
 		if(this.lArmas.get(accion)>0) {
 			if(accion!=4) this.lArmas.set(accion,this.lArmas.get(accion)-1); //Se resta a menos que sea cambiar pa posicion del radar 
 		}
