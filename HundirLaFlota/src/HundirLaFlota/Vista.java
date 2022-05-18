@@ -108,7 +108,7 @@ public class Vista extends JFrame implements Observer {
 		
 		/// Creacion general
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1300, 780);
+		setBounds(100, 100, 1450, 780);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -158,22 +158,23 @@ public class Vista extends JFrame implements Observer {
 		pnlBajo.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		panelPreciosTienda = new JPanel();
+		panelPreciosTienda.setVisible(false);
 		pnlBajo.add(panelPreciosTienda);
 		panelPreciosTienda.setLayout(new GridLayout(2, 3, 0, 0));
 		
-		JLabel lblBomba = new JLabel("Bomba: 50");
+		JLabel lblBomba = new JLabel("Bomba: 2");
 		panelPreciosTienda.add(lblBomba);
 		
-		JLabel lblMisil = new JLabel("Misil: 100");
+		JLabel lblMisil = new JLabel("Misil: 2");
 		panelPreciosTienda.add(lblMisil);
 		
-		JLabel lblEscudo = new JLabel("Escudo: 300");
+		JLabel lblEscudo = new JLabel("Escudo: 2");
 		panelPreciosTienda.add(lblEscudo);
 		
-		JLabel lblRadar = new JLabel("Radar: 300");
+		JLabel lblRadar = new JLabel("Radar: 3");
 		panelPreciosTienda.add(lblRadar);
 		
-		JLabel lblReparacin = new JLabel("Reparación: 500");
+		JLabel lblReparacin = new JLabel("Reparación: 2");
 		panelPreciosTienda.add(lblReparacin);
 		
 		menuAcciones = new JPanel();
@@ -183,6 +184,7 @@ public class Vista extends JFrame implements Observer {
 		
 		btnTienda = new JButton("Tienda");
 		menuAcciones.add(btnTienda);
+		btnTienda.addActionListener(Controlador.getControlador());
 		
 		JButton btnBomba = new JButton("Bomba");
 		menuAcciones.add(btnBomba);
@@ -202,10 +204,11 @@ public class Vista extends JFrame implements Observer {
 		
 		JButton btnEscudo = new JButton("Escudo");
 		menuAcciones.add(btnEscudo);
+		btnEscudo.addActionListener(Controlador.getControlador());
 		
 		JButton btnReparar = new JButton("Reparar");
 		menuAcciones.add(btnReparar);
-		btnEscudo.addActionListener(Controlador.getControlador());
+		btnReparar.addActionListener(Controlador.getControlador());
 		
 		menuPosicionar = new JPanel();
 		pnlBajo.add(menuPosicionar);
@@ -323,6 +326,7 @@ public class Vista extends JFrame implements Observer {
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		if (o instanceof Tile) {						//Llamada desde Tile
+			System.out.println(arg);
 			JLabel aux = this.buscarLabel(((Tile) o).getCoordX(),((Tile) o).getCoordY(),(int)arg);
 			if((Integer)arg==0) {//Ataque sobre agua
 				if(o instanceof Agua) {
@@ -343,6 +347,8 @@ public class Vista extends JFrame implements Observer {
 				}else {
 					this.cambiarColorCasilla(aux, this.cRadar);
 				}
+			}else if ((Integer)arg==4) {
+				this.cambiarColorCasilla(aux, this.cBarco);
 			}else if ((Integer)arg==-1) {//Se selecciona una casilla sobre la que colocar
 				JLabel casAnt = this.getCasillaAnterior();
 				if(casAnt!=null && casAnt.getBackground().equals(this.cSeleccion)) {
@@ -503,7 +509,7 @@ public class Vista extends JFrame implements Observer {
 	}
 	
 	private boolean codDeAccionSobreSiMismo(int x) {
-		return (x == 2);
+		return (x == 2 || x==4);
 	}
 	
 	private void cambiarNumUnidades(JLabel jl, String num) {

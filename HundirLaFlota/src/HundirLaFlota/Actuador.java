@@ -7,8 +7,6 @@ import java.math.*;
 public class Actuador extends Observable{
 	private static Actuador mActuador;
 	
-	private ArrayList<Jugador> lJugadores;
-	
 	private Accion accionAlmacenada;
 	private int direccionAlmacenada;
 	private int tamanoAlmacenado;
@@ -33,23 +31,33 @@ public class Actuador extends Observable{
 	
 	public void almacenarAccion(int pCodAcc){
 		String notificacion="";
-		if (pCodAcc==0) {
-			this.accionAlmacenada = new Bomba();
-			notificacion = "Bomba";
-		}else if(pCodAcc==1) {
-			this.accionAlmacenada = new Misil();
-			notificacion = "Misil";
-		}else if(pCodAcc==2) {
-			this.accionAlmacenada = new Escudo();
-			notificacion = "Escudo";
-		}else if(pCodAcc==3) {
-			this.accionAlmacenada = new ConsultaRadar();
-			notificacion = "Radar";
-		}else if(pCodAcc==-1) {
-			this.accionAlmacenada = new Seleccion();
+		if(!(this.accionAlmacenada instanceof Comprar)) {
+			if (pCodAcc==0) {
+				this.accionAlmacenada = new Bomba();
+				notificacion = "Bomba";
+			}else if(pCodAcc==1) {
+				this.accionAlmacenada = new Misil();
+				notificacion = "Misil";
+			}else if(pCodAcc==2) {
+				this.accionAlmacenada = new Escudo();
+				notificacion = "Escudo";
+			}else if(pCodAcc==3) {
+				this.accionAlmacenada = new ConsultaRadar();
+				notificacion = "Radar";
+			}else if(pCodAcc==5) {
+				this.accionAlmacenada = new Reparar();
+			}else if(pCodAcc==6){ 
+				this.accionAlmacenada = new Comprar();
+				setChanged();
+				notifyObservers("Tienda");
+			}else if(pCodAcc==-1) {
+				this.accionAlmacenada = new Seleccion();
+			}
+		}else if (pCodAcc>=0 && pCodAcc <= 6){
+			this.tratarConTienda(pCodAcc);
 		}
-			setChanged();
-			notifyObservers(notificacion);
+		setChanged();
+		notifyObservers(notificacion);
 	}
 	
 	public void almacenarTamBarco(int pCodTam){
@@ -69,9 +77,11 @@ public class Actuador extends Observable{
 	}
 	
 	public void almacenarPos(int x, int y, int tab){
-		this.posXAlmacenada = x;
-		this.posYAlmacenada = y;
-		this.posTablero = tab;
+		if(GestorTurno.getGestorTurno().tableroApropiado(tab)) {
+			this.posXAlmacenada = x;
+			this.posYAlmacenada = y;
+			this.posTablero = tab;
+		}
 	}
 	
 	public void seleccionarPos(int posJug) {
@@ -138,12 +148,12 @@ public class Actuador extends Observable{
 	}
 	
 	private boolean accionSobreSiMismo() {
-		return(this.accionAlmacenada instanceof Seleccion || this.accionAlmacenada instanceof Escudo);
+		return(this.accionAlmacenada instanceof Seleccion || this.accionAlmacenada instanceof Escudo || this.accionAlmacenada instanceof Reparar);
 	}
 	
-	public boolean tableroApropiado(int turnoActuando,int estadoAct){
+	public boolean tableroApropiado(int turnoActuando,int estadoAct, int tabRecibido){
 		boolean res;
-		if((this.accionSobreSiMismo()&& this.posTablero == turnoActuando)||(!this.accionSobreSiMismo()&&this.posTablero!= turnoActuando)) {
+		if((this.accionSobreSiMismo()&& tabRecibido== turnoActuando)||(!this.accionSobreSiMismo()&&tabRecibido!= turnoActuando)||(estadoAct == 0 && tabRecibido == turnoActuando)) {
 			//Caso en el qué si es el tablero apropiado
 			res = true;
 		}else {
@@ -152,7 +162,7 @@ public class Actuador extends Observable{
 		return res;
 	}
 	
-	private void resetAlmacenadoDePoner(){
+	public void resetAlmacenadoDePoner(){
 		this.accionAlmacenada=new Seleccion();
 		this.direccionAlmacenada=-1;
 		this.tamanoAlmacenado=-1;
@@ -189,6 +199,29 @@ public class Actuador extends Observable{
 		this.posXAlmacenada=-1;
 		this.posYAlmacenada=-1;
 		this.accionAlmacenada = null;
+	}
+	
+	private void tratarConTienda(int a) {
+		String notificacion = "";
+		if (a==0) {
+			notificacion = "Bomba";
+		}else if(a==1) {
+			notificacion = "Misil";
+		}else if(a==2) {
+			notificacion = "Escudo";
+		}else if(a==3) {
+			notificacion = "ConsultaR";
+		}else if(a==5) {
+			notificacion = "Reparar";
+		}
+		System.out.println(notificacion);
+		if(a!=6)GestorJugadores.getGestorJugadores().comprar(notificacion);
+		else {
+			System.out.println("resetear tienda");
+			this.resetAlmacenadoDeActuar();
+			setChanged();
+			notifyObservers("Tienda");
+		}
 	}
 
 }

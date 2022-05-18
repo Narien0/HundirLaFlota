@@ -87,6 +87,7 @@ public class Panel {
 			usarRadar(x,y);
 		}
 		else{
+//			if(a instanceof Reparar)System.out.println("Accion en panel: "+a);
 			this.lTiles[x][y].ejecutar(a);
 		}
 	}

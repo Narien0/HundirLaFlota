@@ -24,6 +24,10 @@ public class Barco {
 		return this.protegido!=0;
 	}
 
+	public boolean estatocado(){
+		return this.lTBarcos.stream().anyMatch(e -> e.getTocado());
+	}
+	
 	public void anadirTBarco(TBarco tB) {
 		this.lTBarcos.add(tB);
 		tB.anadirABarco(this);
@@ -79,5 +83,9 @@ public class Barco {
 		for(int i=0;i<this.lTBarcos.size();i++) {
 			this.lTBarcos.get(i).desmarcarProtegido();
 		}
+	}
+	
+	public void reparar(){
+		lTBarcos.stream().filter(e -> e.getTocado() == true).forEach(e -> e.selfReparar());
 	}
 }

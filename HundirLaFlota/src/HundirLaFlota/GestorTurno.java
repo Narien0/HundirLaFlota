@@ -64,6 +64,7 @@ public class GestorTurno extends Observable implements Observer{
 		notifyObservers(param);
 		
 		if(GestorJugadores.getGestorJugadores().esTurnoIA(turno)){
+			
 			this.actuar();
 		}
 		
@@ -75,12 +76,13 @@ public class GestorTurno extends Observable implements Observer{
 		notifyObservers(this.estado);
 	}
 	
-	public void tableroApropiado(int c){
-		Actuador.getActuador().tableroApropiado(turno,estado);
+	public boolean tableroApropiado(int c){
+		return Actuador.getActuador().tableroApropiado(turno,estado,c);
 	}
 	
 	public void limpiarTableroTurno() {
 		GestorJugadores.getGestorJugadores().limpiarTableroUsuario(turno);
+		Actuador.getActuador().resetAlmacenadoDePoner();
 	}
 	
 	private boolean esTurnoIA() {
@@ -90,6 +92,8 @@ public class GestorTurno extends Observable implements Observer{
 	public void ponerRadarEnTablero(int pObjetivo) {
 		Actuador.getActuador().generarPosRadar(turno, pObjetivo);	
 	}
+	
+	public int Turno(){return this.turno;}
 	
 	
 	@Override

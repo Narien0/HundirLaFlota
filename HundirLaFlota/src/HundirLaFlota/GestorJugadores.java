@@ -9,7 +9,7 @@ public class GestorJugadores {
 	private GestorJugadores() {
 		this.lJugadores = new ArrayList<Jugador>();
 		this.lJugadores.add(0,new Jugador());
-		this.lJugadores.add(1,new IA());
+		this.lJugadores.add(1,IA.getmIA());
 	}
 	
 	public static GestorJugadores getGestorJugadores() {
@@ -20,19 +20,18 @@ public class GestorJugadores {
 	}
 	
 	public boolean actuarUnoContraOtro(int pJugAct,int pJugObj, Accion pAccion, int posX, int posY) {
-//		System.out.print("accion: "+pAccion+"   ");
-//		if(pAccion instanceof Seleccion)System.out.println("Actua "+pJugAct+" contra "+pJugObj);
-		boolean accionEjecutadaCorrectamente=false;
+//		System.out.println("Accion en gestor jugadores: "+pAccion);
+		boolean accionEjecutableCorrectamente=false;
 		Jugador jact = this.lJugadores.get(pJugAct);
 		if(jact instanceof IA) {
-			accionEjecutadaCorrectamente = true;
+			accionEjecutableCorrectamente = true;
 			((IA)jact).realizarAccionInteligente();
 		}else if(pJugAct>=0&&pJugAct<this.lJugadores.size()&&pJugObj>=0&&pJugObj<this.lJugadores.size()&&pAccion!=null){
 			Jugador jobj = this.lJugadores.get(pJugObj);
-			accionEjecutadaCorrectamente = jact.consumirRecuro(pAccion);
-			jobj.actuarSobre(pAccion, posX, posY);
+			accionEjecutableCorrectamente = jact.consumirRecuro(pAccion);
+			if(accionEjecutableCorrectamente)jobj.actuarSobre(pAccion, posX, posY);
 		}
-		return accionEjecutadaCorrectamente;
+		return accionEjecutableCorrectamente;
 	}
 	
 	public void actuarContra(int pJugObj, Accion pAccion, int posX, int posY) {
@@ -71,6 +70,12 @@ public class GestorJugadores {
 	
 	public boolean esTurnoIA(int pos) {
 		return (this.lJugadores.get(pos) instanceof IA);
+	}
+	
+	public int cantidadDeJugadores(){return this.lJugadores.size();}
+	
+	public void comprar(String delta){
+		this.lJugadores.get(GestorTurno.getGestorTurno().Turno()).comprar(delta);
 	}
 
 }

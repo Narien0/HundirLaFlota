@@ -45,9 +45,10 @@ public class Controlador implements ActionListener, MouseListener {
 			Actuador.getActuador().seleccionarPos(1);
 			Actuador.getActuador().resetCoordsAcc();
 		}else if(((JButton) e.getSource()).getText().equals("Tienda")||((JButton) e.getSource()).getText().equals("Salir Tienda")) {
-			
+			Actuador.getActuador().almacenarAccion(6);
 		}else if(((JButton) e.getSource()).getText().equals("Reparar")) {
-			
+			Actuador.getActuador().almacenarAccion(5);
+			GestorTurno.getGestorTurno().actuar();
 		}
 		else if(((JButton) e.getSource()).getText().equals("Portaviones")) {
 			Actuador.getActuador().almacenarTamBarco(4);
@@ -89,7 +90,7 @@ public class Controlador implements ActionListener, MouseListener {
 		int y = ((JLabel)e.getSource()).getText().charAt(1) - '0';
 		int tab = ((JLabel)e.getSource()).getText().charAt(2) - '0';
 		Actuador.getActuador().almacenarPos(x, y, tab);
-		GestorTurno.getGestorTurno().tableroApropiado(tab);
+		//GestorTurno.getGestorTurno().tableroApropiado(tab);
 		GestorTurno.getGestorTurno().actuar();
 	}
 

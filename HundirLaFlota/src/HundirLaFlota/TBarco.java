@@ -11,6 +11,7 @@ public class TBarco extends Tile {
 		super(pCoordX,pCoordY,pOc);
 		this.tocado = false;
 		this.mostrado = false;
+		this.addObserver(IA.getmIA());
 	}
 
 	public boolean getTocado() {
@@ -92,6 +93,20 @@ public class TBarco extends Tile {
 		}else {
 			super.revelar();
 		}
+	}
+	
+	public void selfReparar(){
+		System.out.println("Parte reparada");
+		this.tocado = false;
+		setChanged();
+		this.notifyObservers(4);
+	}
+	public void reparar(){
+		System.out.println("Parte reparadora");
+		this.tocado = false;
+		this.barco.reparar();
+		setChanged();
+		this.notifyObservers(4);
 	}
 
 }
