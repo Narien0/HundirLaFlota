@@ -13,6 +13,7 @@ public class Tienda {
         Objetos.put("Misil", 2);
         Objetos.put("Escudo",2);
         Objetos.put("Reparar",2);
+        Objetos.put("MoverR",0);
         Objetos.put("ConsultaR",3);
 
     }

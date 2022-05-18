@@ -130,7 +130,7 @@ public class IA extends Jugador implements Observer{
 	
 
 	public void realizarAccionInteligente() {
-		String[] gamma = {"Bomba", "Misil", "Escudo", "UsarR", "MoverR", "Reparar"};
+		String[] gamma = {"Bomba", "Misil", "Escudo", "ConsultaR", "MoverR", "Reparar"};
 		int nAccion = (int) (Math.random()*6); //Quinta accion cambiar posicion/poner radar
 		String accion = gamma[nAccion];
 		int x;
