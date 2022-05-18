@@ -202,7 +202,6 @@ public class Jugador extends Observable{
 			}
 		}
 		if (b) {
-			System.out.println(b+"   "+this);
 			setChanged();
 			notifyObservers(false);
 		}

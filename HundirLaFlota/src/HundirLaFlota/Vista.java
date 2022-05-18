@@ -326,7 +326,6 @@ public class Vista extends JFrame implements Observer {
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		if (o instanceof Tile) {						//Llamada desde Tile
-			System.out.println(arg);
 			JLabel aux = this.buscarLabel(((Tile) o).getCoordX(),((Tile) o).getCoordY(),(int)arg);
 			if((Integer)arg==0) {//Ataque sobre agua
 				if(o instanceof Agua) {

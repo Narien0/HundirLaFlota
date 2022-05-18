@@ -58,13 +58,11 @@ public class GestorTurno extends Observable implements Observer{
 		if(!(turno<numJug)) {
 			turno = 0;
 		}
-//		System.out.println(" Turno cambiado a "+turno);
 		boolean param = (this.turno==0);
 		setChanged();
 		notifyObservers(param);
 		
 		if(GestorJugadores.getGestorJugadores().esTurnoIA(turno)){
-			
 			this.actuar();
 		}
 		

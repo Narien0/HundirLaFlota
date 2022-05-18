@@ -61,7 +61,7 @@ public class GestorJugadores {
 	}
 	
 	public void limpiarTableroUsuario(int turn) {
-		this.lJugadores.add(turn,new Jugador());
+		this.lJugadores.set(turn,new Jugador());
 	}
 	
 	public Coordenada getPorRadarDe(int pJug) {
